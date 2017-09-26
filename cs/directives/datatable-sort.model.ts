@@ -1,10 +1,10 @@
-namespace cs.services
+namespace cs.directives
 {
     'use-strict';
     
-    export class SortingService {
+    export class DatatableSortModel {
         public sortData(data: Array<any>, options: cs.directives.IDatatableOptions ): void {
-            const self: SortingService = this;
+            const self: DatatableSortModel = this;
 
             const column = options.columns.filter((column) => { return column.name === options.sort.columnName })[0];
 
@@ -17,7 +17,7 @@ namespace cs.services
         }
 
         public sortDataDynamic(type: 'asc' | 'desc', column: cs.directives.IDatatableColumn) {
-            const self: SortingService = this;
+            const self: DatatableSortModel = this;
 
             if (column.dataType === cs.directives.DataTableColumnType.number) {
                 return function (a, b) {
@@ -68,7 +68,7 @@ namespace cs.services
         }
 
         public sortDataMultipleDynamic(sortType: 'asc' | 'desc', ...columns: cs.directives.IDatatableColumn[]){
-                const self: SortingService = this;
+                const self: DatatableSortModel = this;
                 /*
                  * save the arguments object as it will be overwritten
                  * note that arguments object is an array-like object
@@ -93,6 +93,4 @@ namespace cs.services
                 }
         }
     }
-
-    cs.app.service("sortingService", [() => new SortingService()]);
 }

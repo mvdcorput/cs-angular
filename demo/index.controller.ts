@@ -56,26 +56,34 @@ namespace cs.demo {
                     pageSize: 10
                 }
             };
+
+            self.$scope.datatableOptions1 = JSON.parse(JSON.stringify(self.$scope.datatableOptions));
+            self.$scope.datatableOptions2 = JSON.parse(JSON.stringify(self.$scope.datatableOptions));
+            self.$scope.datatableOptions3 = JSON.parse(JSON.stringify(self.$scope.datatableOptions));
         }
     }
 
     interface IndexScope extends ng.IScope {
         datatableOptions: cs.directives.IDatatableOptions;
+        datatableOptions1: cs.directives.IDatatableOptions;
+        datatableOptions2: cs.directives.IDatatableOptions;
+        datatableOptions3: cs.directives.IDatatableOptions;
+        
     }
 
     const DemoData: Array<any> = [
-        { id: 1, name: 'Martijn van der Corput', street: 'Padakker 21', zipcode: '4824 SV', city: 'Breda'},
-        { id: 2, name: 'Hans van der Beuken', street: 'Bellenbos 45', zipcode: '4850 GF', city: 'Breda'},
+        { id: 1, name: 'Martijn van der Corput', street: 'Gouddonk 18', zipcode: '4824 SX', city: 'Breda'},
+        { id: 2, name: 'Hans van der Beuken', street: 'Bellenbos 45', zipcode: '4850 GF', city: 'Ulvenhout'},
         { id: 3, name: 'Winod Soekarnsingh', street: 'Andersdonk 12', zipcode: '4824 DH', city: 'Breda'},
         { id: 4, name: 'Benny van der Kolk', street: 'Oostendestraat 2', zipcode: '4813 AC', city: 'Breda'},
         { id: 5, name: 'Aart Staartjes', street: 'Barensdonk 86', zipcode: '4824 DG', city: 'Breda'},
         { id: 11, name: 'Martijn van der Corput', street: 'Padakker 21', zipcode: '4824 SV', city: 'Breda'},
-        { id: 12, name: 'Hans van der Beuken', street: 'Bellenbos 45', zipcode: '4850 GF', city: 'Breda'},
+        { id: 12, name: 'Hans van der Beuken', street: 'Bellenbos 45', zipcode: '4850 GF', city: 'Ulvenhout'},
         { id: 13, name: 'Winod Soekarnsingh', street: 'Andersdonk 12', zipcode: '4824 DH', city: 'Breda'},
         { id: 14, name: 'Benny van der Kolk', street: 'Oostendestraat 2', zipcode: '4813 AC', city: 'Breda'},
         { id: 15, name: 'Aart Staartjes', street: 'Barensdonk 86', zipcode: '4824 DG', city: 'Breda'},
         { id: 21, name: 'Martijn van der Corput', street: 'Padakker 21', zipcode: '4824 SV', city: 'Breda'},
-        { id: 22, name: 'Hans van der Beuken', street: 'Bellenbos 45', zipcode: '4850 GF', city: 'Breda'},
+        { id: 22, name: 'Hans van der Beuken', street: 'Bellenbos 45', zipcode: '4850 GF', city: 'Ulvenhout'},
         { id: 23, name: 'Winod Soekarnsingh', street: 'Andersdonk 12', zipcode: '4824 DH', city: 'Breda'},
         { id: 24, name: 'Benny van der Kolk', street: 'Oostendestraat 2', zipcode: '4813 AC', city: 'Breda'},
         { id: 25, name: 'Aart Staartjes', street: 'Barensdonk 86', zipcode: '4824 DG', city: 'Breda'}

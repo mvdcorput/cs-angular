@@ -6,11 +6,32 @@
     <script src="../dist/cs-angular.js"></script>
     <script src="app.js"></script>
     <script src="index.controller.js"></script>
+    <link rel="stylesheet" href="../dist/theme-1.css" />
+    <link rel="stylesheet" href="../dist/theme-2.css" />
+    <link rel="stylesheet" href="../dist/theme-3.css" />
+    <style>
+        .container {
+            margin: 0 auto;
+            width: 700px;
+        }
+    </style>
 </head>
 
 <body>
-    <div ng-controller="IndexController">
-        <div cs-datatable cs-options="datatableOptions"></div>
+    <div ng-controller="IndexController" class="container">
+        <div cs-datatable cs-options="datatableOptions1"></div>
+
+        <br/>
+
+        <div cs-datatable cs-options="datatableOptions2" class="theme-1"></div>
+
+        <br/>
+
+        <div cs-datatable cs-options="datatableOptions3" class="theme-2"></div>
+
+        <br/>
+
+        <div cs-datatable cs-options="datatableOptions3" class="theme-3"></div>
     </div>
 </body>
 

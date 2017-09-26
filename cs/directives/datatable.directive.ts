@@ -37,7 +37,8 @@ namespace cs.directives
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in paging.pagedItems[paging.currentPage]">
+                <tr ng-repeat="item in paging.pagedItems[paging.currentPage]"
+                    ng-class-even="'even'">
                     <td ng-repeat="column in options.columns">{{item[column.name]}}</td>
                 </tr>
             </tbody>
@@ -48,7 +49,7 @@ namespace cs.directives
                     <div class="pagination">
                         <ul>
                             <li ng-if="paging.pagedItems.length<paging.pagesGap">
-                                <a href ng-click="paging.firstPage()" class="prev" ng-bind-html="svgPagerToStart" ng-class="{disabled: paging.currentPage == 0}"></a>
+                                <a href ng-click="paging.firstPage()" class="first" ng-bind-html="svgPagerToStart" ng-class="{disabled: paging.currentPage == 0}"></a>
                             </li>
                             <li>
                                 <a href ng-click="paging.prevPage()" class="prev" ng-bind-html="svgPagerBackward" ng-class="{disabled: paging.currentPage == 0}"></a>
@@ -62,7 +63,7 @@ namespace cs.directives
                                 <a href ng-click="paging.nextPage()" class="next" ng-bind-html="svgPagerForward" ng-class="{disabled: paging.currentPage == paging.pagedItems.length - 1}"></a>
                             </li>
                             <li ng-if="paging.pagedItems.length<paging.pagesGap">
-                                <a href ng-click="paging.lastPage()" class="prev" ng-bind-html="svgPagerToEnd" ng-class="{disabled: paging.currentPage == paging.pagedItems.length - 1}"></a>
+                                <a href ng-click="paging.lastPage()" class="last" ng-bind-html="svgPagerToEnd" ng-class="{disabled: paging.currentPage == paging.pagedItems.length - 1}"></a>
                             </li>
                         </ul>
                     </div>
@@ -71,9 +72,7 @@ namespace cs.directives
         </table>
         `;
 
-        constructor(public $sce: ng.ISCEService, 
-                    public pagingService: cs.services.PagingService,
-                    public sortingService: cs.services.SortingService) {
+        constructor(public $sce: ng.ISCEService) {
             const self: DatatableDirective = this;
             
             self.link = self.unboundLink.bind(self);
@@ -97,7 +96,7 @@ namespace cs.directives
             function sort(column: IDatatableColumn, direction: 'asc' | 'desc'): void {
                 $scope.options.sort = { columnName: column.name, direction: direction };
 
-                self.sortingService.sortData($scope.options.data, $scope.options);
+                $scope.sorting.sortData($scope.options.data, $scope.options);
 
                 $scope.paging.setPages($scope.options.data, $scope.options.paging.pageSize);
             }
@@ -126,7 +125,8 @@ namespace cs.directives
                 $scope.svgSortDesc = self.$sce.trustAsHtml(svgSortDesc);
                 
 
-                $scope.paging = self.pagingService;
+                $scope.paging = new DatatablePageModel();
+                $scope.sorting = new DatatableSortModel();
 
                 $scope.options.paging.pageSize = 5;   
                 
@@ -174,9 +174,10 @@ namespace cs.directives
     export interface IDatatableScope {
         initialized: boolean;
         options: IDatatableOptions;
-        paging: cs.services.PagingService;
+        paging: DatatablePageModel;
         setPage: () => void;
         sort: (column: IDatatableColumn, direction: 'asc' | 'desc') => void;
+        sorting: DatatableSortModel;
         svgPagerBackward: string;
         svgPagerForward: string;
         svgPagerToEnd: string;
@@ -198,6 +199,7 @@ namespace cs.directives
                 color: white;
             }
 
+            .cs-datatable table td,
             .cs-datatable table th {
                 padding: 5px;
             }
@@ -225,6 +227,8 @@ namespace cs.directives
                 display: inline-block;
             }
 
+            .cs-datatable .pagination a.first,
+            .cs-datatable .pagination a.last,
             .cs-datatable .pagination a.next,
             .cs-datatable .pagination a.prev {
                 display: inline-block;
@@ -232,6 +236,14 @@ namespace cs.directives
                 height: 1em;
                 padding: 5px;
                 width: 1em;
+            }
+
+            .cs-datatable .pagination a.first{
+                padding-left: 0;
+            }
+
+            .cs-datatable .pagination a.last{
+                padding-right: 0;
             }
 
             .cs-datatable .pagination a.page {
@@ -246,6 +258,10 @@ namespace cs.directives
 
             .cs-datatable .pagination svg path {
                 fill: #000;
+            }
+
+            .cs-datatable .pagination a.disabled {
+                cursor: default;
             }
 
             .cs-datatable .pagination a.disabled svg path {
@@ -304,5 +320,5 @@ namespace cs.directives
     `
     ;
 
-    cs.app.directive('csDatatable', ['$sce', 'pagingService', 'sortingService', ($sce, pagingService, sortingService) => new DatatableDirective($sce, pagingService, sortingService)])
+    cs.app.directive('csDatatable', ['$sce', ($sce) => new DatatableDirective($sce)])
 }

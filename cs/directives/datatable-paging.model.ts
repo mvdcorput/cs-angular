@@ -1,15 +1,15 @@
-namespace cs.services
+namespace cs.directives
 {
     'use-strict';
     
-    export class PagingService {
+    export class DatatablePageModel {
         public currentPage: number;
         public pagesGap: number;
         public groupedItems: Array<any>;
         public pagedItems: Array<any>;
 
         constructor() {
-            const self: PagingService = this;
+            const self: DatatablePageModel = this;
 
             self.pagesGap = 5;
             self.currentPage = 0;
@@ -18,7 +18,7 @@ namespace cs.services
         }
 
         public firstPage() {
-            const self: PagingService = this;
+            const self: DatatablePageModel = this;
 
             if (self.currentPage > 0) {
                 self.currentPage = 0;
@@ -26,7 +26,7 @@ namespace cs.services
         };
 
         public lastPage() {
-            const self: PagingService = this;
+            const self: DatatablePageModel = this;
 
             if (self.currentPage < self.pagedItems.length - 1) {
                 self.currentPage = self.pagedItems.length - 1;
@@ -34,7 +34,7 @@ namespace cs.services
         };
 
         public nextPage() {
-            const self: PagingService = this;
+            const self: DatatablePageModel = this;
 
             if (self.currentPage < self.pagedItems.length - 1) {
                 self.currentPage++;
@@ -42,7 +42,7 @@ namespace cs.services
         };
 
         public prevPage() {
-            const self: PagingService = this;
+            const self: DatatablePageModel = this;
 
             if (self.currentPage > 0) {
                 self.currentPage--;
@@ -50,7 +50,7 @@ namespace cs.services
         };
 
         public range(size: number, start: number, end: number): Array<number> {
-            const self: PagingService = this;
+            const self: DatatablePageModel = this;
             const ret = [];        
                           
             if (size < end) {
@@ -70,7 +70,7 @@ namespace cs.services
         };
         
         public setPages(data: Array<any>, pageSize: number) {
-            const self: PagingService = this;
+            const self: DatatablePageModel = this;
 
             self.pagedItems = [];
             
@@ -83,6 +83,4 @@ namespace cs.services
             }
         }
     }
-
-    cs.app.service("pagingService", [() => new PagingService()]);
 }
