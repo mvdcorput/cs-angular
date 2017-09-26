@@ -37,28 +37,32 @@ namespace cs.directives
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in pagedItems[currentPage]">
+                <tr ng-repeat="item in paging.pagedItems[paging.currentPage]">
                     <td ng-repeat="column in options.columns">{{item[column.name]}}</td>
                 </tr>
             </tbody>
-            
             </tr>
             </thead>
             <tfoot>
                 <td colspan="{{options.columns.length}}">
                     <div class="pagination">
                         <ul>
-                            <li ng-class="{disabled: currentPage == 0}">
-                                <a href ng-click="prevPage()" class="prev" ng-bind-html="svgPagerBackward"></a>
+                            <li ng-if="paging.pagedItems.length<paging.pagesGap">
+                                <a href ng-click="paging.firstPage()" class="prev" ng-bind-html="svgPagerToStart" ng-class="{disabled: paging.currentPage == 0}"></a>
                             </li>
-                            <li ng-repeat="n in range(pagedItems.length, currentPage, currentPage + pagesGap) "
-                                ng-class="{active: n == currentPage}"
+                            <li>
+                                <a href ng-click="paging.prevPage()" class="prev" ng-bind-html="svgPagerBackward" ng-class="{disabled: paging.currentPage == 0}"></a>
+                            </li>
+                            <li ng-repeat="n in paging.range(paging.pagedItems.length, paging.currentPage, paging.currentPage + paging.pagesGap) "
+                                ng-class="{active: n == paging.currentPage}"
                                 ng-click="setPage()">
                                 <a href ng-bind="n + 1" class="page">1</a>
                             </li>
-                         
-                            <li ng-class="{disabled: (currentPage) == pagedItems.length - 1}">
-                            <a href ng-click="nextPage()" class="next" ng-bind-html="svgPagerForward"></a>
+                            <li>
+                                <a href ng-click="paging.nextPage()" class="next" ng-bind-html="svgPagerForward" ng-class="{disabled: paging.currentPage == paging.pagedItems.length - 1}"></a>
+                            </li>
+                            <li ng-if="paging.pagedItems.length<paging.pagesGap">
+                                <a href ng-click="paging.lastPage()" class="prev" ng-bind-html="svgPagerToEnd" ng-class="{disabled: paging.currentPage == paging.pagedItems.length - 1}"></a>
                             </li>
                         </ul>
                     </div>
@@ -68,6 +72,7 @@ namespace cs.directives
         `;
 
         constructor(public $sce: ng.ISCEService, 
+                    public pagingService: cs.services.PagingService,
                     public sortingService: cs.services.SortingService) {
             const self: DatatableDirective = this;
             
@@ -90,13 +95,13 @@ namespace cs.directives
             }
 
             function setPages() {
-                $scope.pagedItems = [];
+                $scope.paging.pagedItems = [];
                 
                 for (var i = 0; i < $scope.options.data.length; i++) {
                     if (i % $scope.options.paging.pageSize === 0) {
-                        $scope.pagedItems[Math.floor(i / $scope.options.paging.pageSize)] = [ $scope.options.data[i] ];
+                        $scope.paging.pagedItems[Math.floor(i / $scope.options.paging.pageSize)] = [ $scope.options.data[i] ];
                     } else {
-                        $scope.pagedItems[Math.floor(i / $scope.options.paging.pageSize)].push($scope.options.data[i]);
+                        $scope.paging.pagedItems[Math.floor(i / $scope.options.paging.pageSize)].push($scope.options.data[i]);
                     }
                 }
             }
@@ -128,53 +133,18 @@ namespace cs.directives
                 $scope.svgPagerForward = self.$sce.trustAsHtml(svgPagerForward);
                 $scope.svgPagerToEnd = self.$sce.trustAsHtml(svgPagerToEnd);
                 $scope.svgPagerToStart = self.$sce.trustAsHtml(svgPagerToStart);
-
                 $scope.svgSort = self.$sce.trustAsHtml(svgSort);
                 $scope.svgSortAsc = self.$sce.trustAsHtml(svgSortAsc);
                 $scope.svgSortDesc = self.$sce.trustAsHtml(svgSortDesc);
                 
-                /* Paging */ 
-                $scope.pagesGap = 5;
-                $scope.currentPage = 0;
-                $scope.groupedItems = [];
-                $scope.options.paging.pageSize = 5;
-                $scope.pagedItems = [];
 
-                $scope.range = function (size,start, end) {
-                    var ret = [];        
-                                  
-                    if (size < end) {
-                        end = size;
-                        start = size - $scope.pagesGap;
+                $scope.paging = self.pagingService;
 
-                        if (start < 0) {
-                            start = 0;
-                        }
-                    }
-
-                    for (var i = start; i < end; i++) {
-                        ret.push(i);
-                    }        
-        
-                    return ret;
-                };
-                
-                $scope.prevPage = function () {
-                    if ($scope.currentPage > 0) {
-                        $scope.currentPage--;
-                    }
-                };
-                
-                $scope.nextPage = function () {
-                    if ($scope.currentPage < $scope.pagedItems.length - 1) {
-                        $scope.currentPage++;
-                    }
-                };
+                $scope.options.paging.pageSize = 5;   
                 
                 $scope.setPage = function () {
-                    $scope.currentPage = this.n;
+                    $scope.paging.currentPage = this.n;
                 };
-
 
                 $scope.initialized = true;
             }
@@ -214,15 +184,9 @@ namespace cs.directives
         direction: 'asc' | 'desc';
     }
     export interface IDatatableScope {
-        currentPage: number;
-        pagesGap: number;
-        groupedItems: Array<any>;
         initialized: boolean;
-        nextPage: () => void;
         options: IDatatableOptions;
-        pagedItems: Array<any>;
-        prevPage: () => void;
-        range: (size,start, end) => Array<any>;
+        paging: cs.services.PagingService;
         setPage: () => void;
         sort: (column: IDatatableColumn, direction: 'asc' | 'desc') => void;
         svgPagerBackward: string;
@@ -296,6 +260,9 @@ namespace cs.directives
                 fill: #000;
             }
 
+            .cs-datatable .pagination a.disabled svg path {
+                fill: #aaa;
+            }
         </style>
     `;
 
@@ -349,5 +316,5 @@ namespace cs.directives
     `
     ;
 
-    cs.app.directive('csDatatable', ['$sce','sortingService', ($sce, sortingService) => new DatatableDirective($sce, sortingService)])
+    cs.app.directive('csDatatable', ['$sce', 'pagingService', 'sortingService', ($sce, pagingService, sortingService) => new DatatableDirective($sce, pagingService, sortingService)])
 }

@@ -3,6 +3,20 @@ declare namespace cs {
     const app: angular.IModule;
 }
 declare namespace cs.services {
+    class PagingService {
+        currentPage: number;
+        pagesGap: number;
+        groupedItems: Array<any>;
+        pagedItems: Array<any>;
+        constructor();
+        range(size: number, start: number, end: number): Array<number>;
+        firstPage(): void;
+        lastPage(): void;
+        prevPage(): void;
+        nextPage(): void;
+    }
+}
+declare namespace cs.services {
     class SortingService {
         sortData(data: Array<any>, options: cs.directives.IDatatableOptions): void;
         sortDataDynamic(type: 'asc' | 'desc', column: cs.directives.IDatatableColumn): (a: any, b: any) => number;
@@ -39,15 +53,9 @@ declare namespace cs.directives {
         direction: 'asc' | 'desc';
     }
     interface IDatatableScope {
-        currentPage: number;
-        pagesGap: number;
-        groupedItems: Array<any>;
         initialized: boolean;
-        nextPage: () => void;
         options: IDatatableOptions;
-        pagedItems: Array<any>;
-        prevPage: () => void;
-        range: (size, start, end) => Array<any>;
+        paging: cs.services.PagingService;
         setPage: () => void;
         sort: (column: IDatatableColumn, direction: 'asc' | 'desc') => void;
         svgPagerBackward: string;
