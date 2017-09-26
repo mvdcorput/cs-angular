@@ -17,6 +17,38 @@ namespace cs.services
             self.pagedItems = [];
         }
 
+        public firstPage() {
+            const self: PagingService = this;
+
+            if (self.currentPage > 0) {
+                self.currentPage = 0;
+            }
+        };
+
+        public lastPage() {
+            const self: PagingService = this;
+
+            if (self.currentPage < self.pagedItems.length - 1) {
+                self.currentPage = self.pagedItems.length - 1;
+            }
+        };
+
+        public nextPage() {
+            const self: PagingService = this;
+
+            if (self.currentPage < self.pagedItems.length - 1) {
+                self.currentPage++;
+            }
+        };
+
+        public prevPage() {
+            const self: PagingService = this;
+
+            if (self.currentPage > 0) {
+                self.currentPage--;
+            }
+        };
+
         public range(size: number, start: number, end: number): Array<number> {
             const self: PagingService = this;
             const ret = [];        
@@ -37,37 +69,19 @@ namespace cs.services
             return ret;
         };
         
-        public firstPage() {
+        public setPages(data: Array<any>, pageSize: number) {
             const self: PagingService = this;
 
-            if (self.currentPage > 0) {
-                self.currentPage = 0;
+            self.pagedItems = [];
+            
+            for (var i = 0; i < data.length; i++) {
+                if (i % pageSize === 0) {
+                    self.pagedItems[Math.floor(i / pageSize)] = [ data[i] ];
+                } else {
+                    self.pagedItems[Math.floor(i / pageSize)].push(data[i]);
+                }
             }
-        };
-
-        public lastPage() {
-            const self: PagingService = this;
-
-            if (self.currentPage < self.pagedItems.length - 1) {
-                self.currentPage = self.pagedItems.length - 1;
-            }
-        };
-
-        public prevPage() {
-            const self: PagingService = this;
-
-            if (self.currentPage > 0) {
-                self.currentPage--;
-            }
-        };
-        
-        public nextPage() {
-            const self: PagingService = this;
-
-            if (self.currentPage < self.pagedItems.length - 1) {
-                self.currentPage++;
-            }
-        };
+        }
     }
 
     cs.app.service("pagingService", [() => new PagingService()]);

@@ -15,6 +15,34 @@ var cs;
                 self.groupedItems = [];
                 self.pagedItems = [];
             }
+            PagingService.prototype.firstPage = function () {
+                var self = this;
+                if (self.currentPage > 0) {
+                    self.currentPage = 0;
+                }
+            };
+            ;
+            PagingService.prototype.lastPage = function () {
+                var self = this;
+                if (self.currentPage < self.pagedItems.length - 1) {
+                    self.currentPage = self.pagedItems.length - 1;
+                }
+            };
+            ;
+            PagingService.prototype.nextPage = function () {
+                var self = this;
+                if (self.currentPage < self.pagedItems.length - 1) {
+                    self.currentPage++;
+                }
+            };
+            ;
+            PagingService.prototype.prevPage = function () {
+                var self = this;
+                if (self.currentPage > 0) {
+                    self.currentPage--;
+                }
+            };
+            ;
             PagingService.prototype.range = function (size, start, end) {
                 var self = this;
                 var ret = [];
@@ -31,34 +59,18 @@ var cs;
                 return ret;
             };
             ;
-            PagingService.prototype.firstPage = function () {
+            PagingService.prototype.setPages = function (data, pageSize) {
                 var self = this;
-                if (self.currentPage > 0) {
-                    self.currentPage = 0;
+                self.pagedItems = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (i % pageSize === 0) {
+                        self.pagedItems[Math.floor(i / pageSize)] = [data[i]];
+                    }
+                    else {
+                        self.pagedItems[Math.floor(i / pageSize)].push(data[i]);
+                    }
                 }
             };
-            ;
-            PagingService.prototype.lastPage = function () {
-                var self = this;
-                if (self.currentPage < self.pagedItems.length - 1) {
-                    self.currentPage = self.pagedItems.length - 1;
-                }
-            };
-            ;
-            PagingService.prototype.prevPage = function () {
-                var self = this;
-                if (self.currentPage > 0) {
-                    self.currentPage--;
-                }
-            };
-            ;
-            PagingService.prototype.nextPage = function () {
-                var self = this;
-                if (self.currentPage < self.pagedItems.length - 1) {
-                    self.currentPage++;
-                }
-            };
-            ;
             return PagingService;
         }());
         services.PagingService = PagingService;
@@ -199,23 +211,12 @@ var cs;
                     sort(column, $scope.options.sort.direction);
                 }
                 else {
-                    setPages();
-                }
-                function setPages() {
-                    $scope.paging.pagedItems = [];
-                    for (var i = 0; i < $scope.options.data.length; i++) {
-                        if (i % $scope.options.paging.pageSize === 0) {
-                            $scope.paging.pagedItems[Math.floor(i / $scope.options.paging.pageSize)] = [$scope.options.data[i]];
-                        }
-                        else {
-                            $scope.paging.pagedItems[Math.floor(i / $scope.options.paging.pageSize)].push($scope.options.data[i]);
-                        }
-                    }
+                    $scope.paging.setPages($scope.options.data, $scope.options.paging.pageSize);
                 }
                 function sort(column, direction) {
                     $scope.options.sort = { columnName: column.name, direction: direction };
                     self.sortingService.sortData($scope.options.data, $scope.options);
-                    setPages();
+                    $scope.paging.setPages($scope.options.data, $scope.options.paging.pageSize);
                 }
             };
             DatatableDirective.prototype.initialize = function ($scope, $element) {

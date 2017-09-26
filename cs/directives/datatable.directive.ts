@@ -91,19 +91,7 @@ namespace cs.directives
 
                 sort(column, $scope.options.sort.direction);
             } else {
-                setPages();
-            }
-
-            function setPages() {
-                $scope.paging.pagedItems = [];
-                
-                for (var i = 0; i < $scope.options.data.length; i++) {
-                    if (i % $scope.options.paging.pageSize === 0) {
-                        $scope.paging.pagedItems[Math.floor(i / $scope.options.paging.pageSize)] = [ $scope.options.data[i] ];
-                    } else {
-                        $scope.paging.pagedItems[Math.floor(i / $scope.options.paging.pageSize)].push($scope.options.data[i]);
-                    }
-                }
+                $scope.paging.setPages($scope.options.data, $scope.options.paging.pageSize);
             }
 
             function sort(column: IDatatableColumn, direction: 'asc' | 'desc'): void {
@@ -111,7 +99,7 @@ namespace cs.directives
 
                 self.sortingService.sortData($scope.options.data, $scope.options);
 
-                setPages();
+                $scope.paging.setPages($scope.options.data, $scope.options.paging.pageSize);
             }
         }
 

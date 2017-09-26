@@ -9,11 +9,12 @@ declare namespace cs.services {
         groupedItems: Array<any>;
         pagedItems: Array<any>;
         constructor();
-        range(size: number, start: number, end: number): Array<number>;
         firstPage(): void;
         lastPage(): void;
-        prevPage(): void;
         nextPage(): void;
+        prevPage(): void;
+        range(size: number, start: number, end: number): Array<number>;
+        setPages(data: Array<any>, pageSize: number): void;
     }
 }
 declare namespace cs.services {
