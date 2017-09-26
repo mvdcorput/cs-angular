@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "sourceMap": true
+    },
+    "compileOnSave": true,
+    "buildOnSave": true,
+    "include": [
+        "./**/*",
+        "./../dist/**/*"
+    ],
+    "atom": {
+        "rewriteTsconfig": false
+    }
+}

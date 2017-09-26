@@ -1,0 +1,36 @@
+{
+    "name": "cs-angular",
+    "private": true,
+    "version": "1.0.0",
+    "devDependencies": {
+        "@types/angular": "1.6.32",
+        "minifier": "0.8.1",
+        "typescript": "2.5.2"
+    },
+    "dependencies": {
+        "angular": "1.6.6"
+    },
+    "description": "Angular directives",
+    "main": "dist/cs-angular.js",
+    "typings": "dist/cs-angular.d.ts",
+    "scripts": {
+        "postinstall": "npm run tsc",
+        "tsc": "tsc -p cs && tsc -p demo && minify dist/cs-angular.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mvdcorput/cs-angular.git"
+    },
+    "keywords": [
+        "angular",
+        "directives",
+        "datatable"
+    ],
+    "author": "M. van der Corput",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/mvdcorput/cs-angular/issues"
+    },
+    "homepage": "https://github.com/mvdcorput/cs-angular#readme"
+}
