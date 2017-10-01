@@ -82,6 +82,25 @@ var cs;
                         return type === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
                     };
                 }
+                if (column.dataType === cs.directives.DataTableColumnType.dateString) {
+                    return function (a, b) {
+                        var propA = a[column.name];
+                        var propB = b[column.name];
+                        var dateA = column.onDateStringConvert ? column.onDateStringConvert(propA) : new Date(propA);
+                        var dateB = column.onDateStringConvert ? column.onDateStringConvert(propB) : new Date(propB);
+                        if (propA === propB) {
+                            return 0;
+                        }
+                        else if (propA === null) {
+                            return 1;
+                        }
+                        else if (propB === null) {
+                            return -1;
+                        }
+                        ;
+                        return type === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
+                    };
+                }
             };
             DatatableSortModel.prototype.sortDataMultipleDynamic = function (sortType) {
                 var columns = [];
@@ -128,17 +147,21 @@ var cs;
                 this.scope = {
                     options: '=csOptions'
                 };
-                this.template = "\n        " + cssStyle + "\n        <table ng-if=\"initialized === true\">\n            <thead>\n                <tr>\n                    <th ng-repeat=\"column in options.columns\">\n                        <span>{{column.title}}</span>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSort\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName!==column.name\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortAsc\"\n                            ng-click=\"sort(column, 'desc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='asc'\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortDesc\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='desc'\"> \n                        </div>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr ng-repeat=\"item in options.data | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index\"\n                    ng-class-even=\"'even'\">\n                    <td ng-repeat=\"column in options.columns\">{{item[column.name]}}</td>\n                </tr>\n            </tbody>\n            <tfoot>\n                <tr>\n                    <td colspan=\"{{options.columns.length}}\">\n                        <div cs-pagination cs-options=\"paginationOptions\">\n                    </td>\n                </tr>\n            </tfoot>   \n        </table>\n        ";
+                this.template = "\n        " + cssStyle + "\n        <table ng-if=\"initialized === true\">\n            <thead>\n                <tr>\n                    <th ng-repeat=\"column in options.columns\">\n                        <span>{{column.title}}</span>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSort\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName!==column.name\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortAsc\"\n                            ng-click=\"sort(column, 'desc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='asc'\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortDesc\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='desc'\"> \n                        </div>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr ng-repeat=\"item in options.data | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index\"\n                    ng-class-even=\"'even'\">\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && [4,5].indexOf(column.dataType) === -1\">{{item[column.name]}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && column.dataType === 4\">{{renderDateColumn(item[column.name])}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && column.dataType === 5\">{{renderDateStringColumn(item[column.name])}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"column.onDraw\">{{column.onDraw({ value: item[column.name], model: item})}}</td>\n                </tr>\n            </tbody>\n            <tfoot>\n                <tr>\n                    <td colspan=\"{{options.columns.length}}\">\n                        <div cs-pagination cs-options=\"paginationOptions\">\n                    </td>\n                </tr>\n            </tfoot>   \n        </table>\n        ";
                 var self = this;
                 self.link = self.unboundLink.bind(self);
             }
             DatatableDirective.prototype.unboundLink = function ($scope, $element, attrs) {
                 var self = this;
                 self.initialize($scope, $element);
+                $scope.renderDateColumn = self.renderDateColumn.bind(self);
+                $scope.renderDateStringColumn = self.renderDateStringColumn.bind(self);
                 $scope.sort = sort;
-                if ($scope.options.sort !== undefined && $scope.options.sort !== null) {
+                if ($scope.options && $scope.options.sort !== undefined && $scope.options.sort !== null) {
                     var column = $scope.options.columns.filter(function (column) { return column.name === $scope.options.sort.columnName; })[0];
-                    sort(column, $scope.options.sort.direction);
+                    if (column) {
+                        sort(column, $scope.options.sort.direction);
+                    }
                 }
                 function sort(column, direction) {
                     $scope.options.sort = { columnName: column.name, direction: direction };
@@ -168,12 +191,30 @@ var cs;
                     $scope.initialized = true;
                 }
             };
+            DatatableDirective.prototype.renderDateColumn = function (value) {
+                var year = value.getFullYear();
+                var month = value.getMonth() + 1;
+                var day = value.getDate();
+                return pad(month, 2) + "/" + pad(day, 2) + "/" + year;
+                function pad(value, length) {
+                    return (value.toString().length < length) ? pad("0" + value.toString(), length) : value;
+                }
+            };
+            DatatableDirective.prototype.renderDateStringColumn = function (value, dateConverter) {
+                var self = this;
+                if (dateConverter) {
+                    return self.renderDateColumn(dateConverter(value));
+                }
+                else {
+                    return self.renderDateColumn(new Date(value));
+                }
+            };
             DatatableDirective.prototype.scopeApply = function ($scope) {
                 if ($scope == undefined && $scope == null) {
                     return;
                 }
-                var result = false;
                 var phase = $scope.$root.$$phase;
+                var result = false;
                 if (phase !== '$apply' && phase !== '$digest') {
                     $scope.$apply();
                     result = true;
@@ -188,7 +229,7 @@ var cs;
             DataTableColumnType[DataTableColumnType["number"] = 2] = "number";
             DataTableColumnType[DataTableColumnType["boolean"] = 3] = "boolean";
             DataTableColumnType[DataTableColumnType["date"] = 4] = "date";
-            DataTableColumnType[DataTableColumnType["dateJson"] = 5] = "dateJson";
+            DataTableColumnType[DataTableColumnType["dateString"] = 5] = "dateString";
         })(DataTableColumnType = directives.DataTableColumnType || (directives.DataTableColumnType = {}));
         var cssStyle = "\n        <style>\n            .cs-datatable table {\n                border-collapse: collapse;\n            }\n\n            .cs-datatable table thead {\n                background-color: #000;\n                color: white;\n            }\n\n            .cs-datatable table td,\n            .cs-datatable table th {\n                padding: 5px;\n            }\n\n            .cs-datatable table th span {\n                display:inline-block;\n            }\n\n            .cs-datatable table th .icon-sort {\n                cursor: pointer;\n                display:inline-block;\n                float: right;\n                height: 1em;\n                width: 1em;\n            }\n        </style>\n    ";
         var svgSort = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1408 1088q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45zm0-384q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z\" fill=\"#fff\"/></svg>\n    ";

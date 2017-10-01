@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <title>cs-angular demo dates</title>
+    <script src="../node_modules/angular/angular.min.js"></script>
+    <script src="../dist/cs-angular.js"></script>
+    <script src="app.js"></script>
+    <script src="date-examples.controller.js"></script>
+    <style>
+        .container {
+            margin: 0 auto;
+            width: 700px;
+        }
+
+        .double-space-top { 
+            margin-top: 20px
+        }
+
+        .space-top { 
+            margin-top: 10px
+        }
+    </style>
+</head>
+
+<body ng-controller="DateExamplesController">
+    <div class="container">
+        <h1>Datatable date examples</h1>
+    </div>
+    <div class="container space-top">
+        <a href="index.html">Terug daar demo home</a>
+    </div>
+    <div class="container double-space-top">
+        <h1>Normal date example</h1>
+    </div>
+    <div class="container space-top">
+        <div cs-datatable cs-options="datatableOptions1"></div>
+    </div>
+    <div class="container double-space-top">
+        <h1>Date formatting example (dutch language format)</h1>
+    </div>
+    <div  class="container space-top">
+        <div cs-datatable cs-options="datatableOptions2"></div>
+    </div>
+    <div class="container double-space-top">
+        <h1>Date string column example</h1>
+    </div>
+    <div  class="container space-top">
+        <div cs-datatable cs-options="datatableOptions3"></div>
+    </div>
+</body>
+
+</html>

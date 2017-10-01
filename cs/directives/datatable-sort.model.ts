@@ -65,6 +65,21 @@ namespace cs.directives
                     return type === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
                 }
             }
+
+            if (column.dataType === cs.directives.DataTableColumnType.dateString) {
+                return function (a, b) {
+                    const propA = a[column.name];
+                    const propB = b[column.name];
+                    const dateA = column.onDateStringConvert ? column.onDateStringConvert(propA) : new Date(propA);
+                    const dateB = column.onDateStringConvert ? column.onDateStringConvert(propB) : new Date(propB);
+
+                    if (propA === propB) { return 0 }
+                    else if (propA === null) { return 1 }
+                    else if (propB === null) { return -1 };
+
+                    return type === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
+                }
+            }
         }
 
         public sortDataMultipleDynamic(sortType: 'asc' | 'desc', ...columns: cs.directives.IDatatableColumn[]){

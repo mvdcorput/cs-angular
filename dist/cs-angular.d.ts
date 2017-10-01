@@ -15,14 +15,20 @@ declare namespace cs.directives {
         number = 2,
         boolean = 3,
         date = 4,
-        dateJson = 5,
+        dateString = 5,
     }
     interface IDatatableColumn {
         cssClass: string;
         dataType: DataTableColumnType;
+        onDateStringConvert?: (value: string) => Date;
+        onDraw?: (event: IDatatableColumnOnDrawEvent) => void;
         name: string;
         sortable: boolean;
         title: string;
+    }
+    interface IDatatableColumnOnDrawEvent {
+        value: any;
+        model: any;
     }
     interface IDatatableOptions {
         columns: Array<IDatatableColumn>;
@@ -41,6 +47,8 @@ declare namespace cs.directives {
         initialized: boolean;
         options: IDatatableOptions;
         paginationOptions: IPaginationOptions;
+        renderDateColumn: (value: Date) => string;
+        renderDateStringColumn: (value: string, dateConverter: (value: string) => Date) => string;
         sort: (column: IDatatableColumn, direction: 'asc' | 'desc') => void;
         sorting: DatatableSortModel;
         svgSort: string;

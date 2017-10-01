@@ -39,7 +39,10 @@ namespace cs.directives
             <tbody>
                 <tr ng-repeat="item in options.data | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index"
                     ng-class-even="'even'">
-                    <td ng-repeat="column in options.columns">{{item[column.name]}}</td>
+                    <td ng-repeat="column in options.columns" ng-if="!column.onDraw && [4,5].indexOf(column.dataType) === -1">{{item[column.name]}}</td>
+                    <td ng-repeat="column in options.columns" ng-if="!column.onDraw && column.dataType === 4">{{renderDateColumn(item[column.name])}}</td>
+                    <td ng-repeat="column in options.columns" ng-if="!column.onDraw && column.dataType === 5">{{renderDateStringColumn(item[column.name])}}</td>
+                    <td ng-repeat="column in options.columns" ng-if="column.onDraw">{{column.onDraw({ value: item[column.name], model: item})}}</td>
                 </tr>
             </tbody>
             <tfoot>
@@ -63,12 +66,16 @@ namespace cs.directives
 
             self.initialize($scope, $element);
 
+            $scope.renderDateColumn = self.renderDateColumn.bind(self);
+            $scope.renderDateStringColumn = self.renderDateStringColumn.bind(self);
             $scope.sort = sort;
 
-            if ($scope.options.sort !== undefined && $scope.options.sort !== null) {
+            if ($scope.options && $scope.options.sort !== undefined && $scope.options.sort !== null) {
                 const column = $scope.options.columns.filter((column) => { return column.name === $scope.options.sort.columnName; })[0];
 
-                sort(column, $scope.options.sort.direction);
+                if (column) {
+                    sort(column, $scope.options.sort.direction);
+                }
             } 
 
             function sort(column: IDatatableColumn, direction: 'asc' | 'desc'): void {
@@ -110,11 +117,34 @@ namespace cs.directives
             }
         }
 
+        private renderDateColumn(value: Date): string {
+            var year = value.getFullYear(); 
+            var month = value.getMonth() + 1;
+            var day = value.getDate();
+            
+            return `${pad(month, 2)}/${pad(day, 2)}/${year}`;
+
+            function pad(value: number | string, length: number) {
+                return (value.toString().length < length) ? pad("0" + value.toString(), length):value;
+            }
+        }
+
+        private renderDateStringColumn(value: string, dateConverter: (value: string) => Date): string {
+            const self: DatatableDirective = this;
+            
+            if (dateConverter) {
+                return self.renderDateColumn(dateConverter(value));
+            } else {
+                return self.renderDateColumn(new Date(value));
+            }
+        }
+
         private scopeApply($scope: ng.IScope): boolean {
             if ($scope == undefined && $scope == null) { return; }
+
+            const phase = $scope.$root.$$phase;
             let result = false;
     
-            const phase = $scope.$root.$$phase;
             if (phase !== '$apply' && phase !== '$digest') {
                 $scope.$apply();
                 result = true;
@@ -129,15 +159,22 @@ namespace cs.directives
         number = 2,
         boolean = 3,
         date = 4,
-        dateJson = 5
+        dateString = 5
     }
 
     export interface IDatatableColumn {
         cssClass: string;
         dataType: DataTableColumnType;
+        onDateStringConvert?: (value: string) => Date;
+        onDraw?: (event: IDatatableColumnOnDrawEvent) => void;
         name: string;
         sortable: boolean;
         title: string;
+    }
+
+    export interface IDatatableColumnOnDrawEvent {
+        value: any;
+        model: any;
     }
     
     export interface IDatatableOptions {
@@ -160,6 +197,8 @@ namespace cs.directives
         initialized: boolean;
         options: IDatatableOptions;
         paginationOptions: IPaginationOptions;
+        renderDateColumn: (value: Date) => string;
+        renderDateStringColumn: (value: string, dateConverter: (value: string) => Date) => string;
         sort: (column: IDatatableColumn, direction: 'asc' | 'desc') => void;
         sorting: DatatableSortModel;
         svgSort: string;
