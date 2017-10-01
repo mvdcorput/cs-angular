@@ -21,7 +21,7 @@ declare namespace cs.directives {
         cssClass: string;
         dataType: DataTableColumnType;
         onDateStringConvert?: (value: string) => Date;
-        onDraw?: (event: IDatatableColumnOnDrawEvent) => void;
+        onDraw?: (event: IDatatableColumnOnDrawEvent) => string;
         name: string;
         sortable: boolean;
         title: string;
@@ -33,6 +33,7 @@ declare namespace cs.directives {
     interface IDatatableOptions {
         columns: Array<IDatatableColumn>;
         data: Array<any>;
+        filter?: string;
         sort?: IDatatableSort;
         sortSecondare?: IDatatableSort;
     }
@@ -44,6 +45,8 @@ declare namespace cs.directives {
         direction: 'asc' | 'desc';
     }
     interface IDatatableScope extends ng.IScope {
+        filter: () => void;
+        filteredData: Array<any>;
         initialized: boolean;
         options: IDatatableOptions;
         paginationOptions: IPaginationOptions;
@@ -61,6 +64,7 @@ declare namespace cs.directives {
         gap: number;
         page?: number;
         pageSize: number;
+        refresh?: () => void;
         total: number;
     }
     interface IDatatableSort {

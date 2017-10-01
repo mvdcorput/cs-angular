@@ -147,25 +147,78 @@ var cs;
                 this.scope = {
                     options: '=csOptions'
                 };
-                this.template = "\n        " + cssStyle + "\n        <table ng-if=\"initialized === true\">\n            <thead>\n                <tr>\n                    <th ng-repeat=\"column in options.columns\">\n                        <span>{{column.title}}</span>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSort\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName!==column.name\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortAsc\"\n                            ng-click=\"sort(column, 'desc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='asc'\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortDesc\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='desc'\"> \n                        </div>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr ng-repeat=\"item in options.data | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index\"\n                    ng-class-even=\"'even'\">\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && [4,5].indexOf(column.dataType) === -1\">{{item[column.name]}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && column.dataType === 4\">{{renderDateColumn(item[column.name])}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && column.dataType === 5\">{{renderDateStringColumn(item[column.name])}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"column.onDraw\">{{column.onDraw({ value: item[column.name], model: item})}}</td>\n                </tr>\n            </tbody>\n            <tfoot>\n                <tr>\n                    <td colspan=\"{{options.columns.length}}\">\n                        <div cs-pagination cs-options=\"paginationOptions\">\n                    </td>\n                </tr>\n            </tfoot>   \n        </table>\n        ";
+                this.template = "\n        " + cssStyle + "\n        <table ng-if=\"initialized === true\">\n            <thead>\n                <tr>\n                    <th ng-repeat=\"column in options.columns\">\n                        <span>{{column.title}}</span>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSort\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName!==column.name\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortAsc\"\n                            ng-click=\"sort(column, 'desc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='asc'\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortDesc\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='desc'\"> \n                        </div>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr ng-repeat=\"item in filteredData | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index\"\n                    ng-class-even=\"'even'\">\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && [4,5].indexOf(column.dataType) === -1\">{{item[column.name]}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && column.dataType === 4\">{{renderDateColumn(item[column.name])}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && column.dataType === 5\">{{renderDateStringColumn(item[column.name])}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"column.onDraw\">{{column.onDraw({ value: item[column.name], model: item})}}</td>\n                </tr>\n            </tbody>\n            <tfoot>\n                <tr>\n                    <td colspan=\"{{options.columns.length}}\">\n                        <div cs-pagination cs-options=\"paginationOptions\">\n                    </td>\n                </tr>\n            </tfoot>   \n        </table>\n        ";
                 var self = this;
                 self.link = self.unboundLink.bind(self);
             }
             DatatableDirective.prototype.unboundLink = function ($scope, $element, attrs) {
                 var self = this;
-                self.initialize($scope, $element);
+                $scope.filter = filter;
                 $scope.renderDateColumn = self.renderDateColumn.bind(self);
                 $scope.renderDateStringColumn = self.renderDateStringColumn.bind(self);
                 $scope.sort = sort;
+                self.initialize($scope, $element);
                 if ($scope.options && $scope.options.sort !== undefined && $scope.options.sort !== null) {
                     var column = $scope.options.columns.filter(function (column) { return column.name === $scope.options.sort.columnName; })[0];
                     if (column) {
                         sort(column, $scope.options.sort.direction);
                     }
                 }
+                function filter() {
+                    if ($scope.options && ($scope.options.filter !== undefined && $scope.options.filter !== null && $scope.options.filter !== '')) {
+                        $scope.filteredData = $scope.options.data.filter(function (item, index, data) {
+                            var columnLength = $scope.options.columns.length;
+                            var match = false;
+                            for (var i = 0; i < columnLength; i++) {
+                                var column = $scope.options.columns[i];
+                                if (item[column.name]) {
+                                    switch (column.dataType) {
+                                        case DataTableColumnType.string:
+                                            if (item[column.name].toLowerCase().indexOf($scope.options.filter.toLowerCase()) > -1) {
+                                                match = true;
+                                            }
+                                            break;
+                                        case DataTableColumnType.number:
+                                            if (item[column.name].toString().toLowerCase().indexOf($scope.options.filter.toLowerCase()) > -1) {
+                                                match = true;
+                                            }
+                                            break;
+                                        case DataTableColumnType.dateString:
+                                            var date = column.onDateStringConvert ? column.onDateStringConvert(item[column.name]) : new Date(item[column.name]);
+                                            var matchDateStrimg = column.onDraw ? column.onDraw({ model: item, value: item[column.name] }) : self.renderDateColumn(new Date(item[column.name]));
+                                            if (matchDateStrimg.indexOf($scope.options.filter) > -1) {
+                                                match = true;
+                                            }
+                                            break;
+                                        case DataTableColumnType.date:
+                                            var matchDate = column.onDraw ? column.onDraw({ model: item, value: item[column.name] }) : self.renderDateColumn(new Date(item[column.name]));
+                                            if (matchDate.indexOf($scope.options.filter) > -1) {
+                                                match = true;
+                                            }
+                                            break;
+                                    }
+                                }
+                            }
+                            return match;
+                        });
+                    }
+                    else {
+                        $scope.filteredData = $scope.options.data;
+                    }
+                    // Sort
+                    var column = $scope.options.columns.filter(function (column) { return column.name === $scope.options.sort.columnName; })[0];
+                    if (column) {
+                        sort(column, $scope.options.sort.direction);
+                    }
+                    // Set pagination
+                    if ($scope.paginationOptions.refresh) {
+                        $scope.paginationOptions.total = $scope.filteredData ? $scope.filteredData.length : 1;
+                        $scope.paginationOptions.refresh();
+                    }
+                }
                 function sort(column, direction) {
                     $scope.options.sort = { columnName: column.name, direction: direction };
-                    $scope.sorting.sortData($scope.options.data, $scope.options);
+                    $scope.sorting.sortData($scope.filteredData, $scope.options);
                     self.scopeApply($scope);
                 }
             };
@@ -178,16 +231,21 @@ var cs;
                     }
                     if ($scope.options.data === undefined || $scope.options.data === null) {
                         $scope.options.data = [];
+                        $scope.filteredData = $scope.options.data.slice(0);
                     }
+                    $scope.sorting = new directives.DatatableSortModel();
+                    $scope.$watch('options.filter', function () {
+                        $scope.filter();
+                    });
                     $scope.svgSort = self.$sce.trustAsHtml(svgSort);
                     $scope.svgSortAsc = self.$sce.trustAsHtml(svgSortAsc);
                     $scope.svgSortDesc = self.$sce.trustAsHtml(svgSortDesc);
                     $scope.paginationOptions = {
                         gap: 5,
                         pageSize: 5,
-                        total: $scope.options.data.length
+                        total: $scope.filteredData ? $scope.filteredData.length : 1
                     };
-                    $scope.sorting = new directives.DatatableSortModel();
+                    $scope.filter();
                     $scope.initialized = true;
                 }
             };
@@ -257,6 +315,7 @@ var cs;
             PaginationDirective.prototype.unboundLink = function ($scope, $element, attrs) {
                 var self = this;
                 self.initialize($scope, $element);
+                $scope.options.refresh = refresh;
                 $scope.firstPage = firstPage;
                 $scope.lastPage = lastPage;
                 $scope.nextPage = nextPage;
@@ -286,6 +345,9 @@ var cs;
                     }
                     setStartPage();
                 }
+                function refresh() {
+                    self.initialize($scope, $element);
+                }
                 function setPage(page) {
                     $scope.options.page = page;
                     setStartPage();
@@ -303,21 +365,10 @@ var cs;
                     $scope.svgPagerForward = self.$sce.trustAsHtml(svgPagerForward);
                     $scope.svgPagerToEnd = self.$sce.trustAsHtml(svgPagerToEnd);
                     $scope.svgPagerToStart = self.$sce.trustAsHtml(svgPagerToStart);
-                    setPages();
+                    self.setPages($scope);
                     $scope.options.page = $scope.options.page ? $scope.options.page : 1;
                     $scope.startPage = 1;
-                    $scope.$watch('options.total'), function () {
-                        setPages();
-                    };
                     $scope.initialized = true;
-                }
-                function setPages() {
-                    if ($scope.options.total == 0) {
-                        $scope.pages = [];
-                    }
-                    else {
-                        $scope.pages = self.range(1, Math.ceil($scope.options.total / $scope.options.pageSize));
-                    }
                 }
             };
             PaginationDirective.prototype.range = function (start, end) {
@@ -326,6 +377,15 @@ var cs;
                     result.push(i);
                 }
                 return result;
+            };
+            PaginationDirective.prototype.setPages = function ($scope) {
+                var self = this;
+                if ($scope.options.total == 0) {
+                    $scope.pages = [];
+                }
+                else {
+                    $scope.pages = self.range(1, Math.ceil($scope.options.total / $scope.options.pageSize));
+                }
             };
             return PaginationDirective;
         }());

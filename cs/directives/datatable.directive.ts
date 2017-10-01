@@ -37,7 +37,7 @@ namespace cs.directives
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in options.data | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index"
+                <tr ng-repeat="item in filteredData | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index"
                     ng-class-even="'even'">
                     <td ng-repeat="column in options.columns" ng-if="!column.onDraw && [4,5].indexOf(column.dataType) === -1">{{item[column.name]}}</td>
                     <td ng-repeat="column in options.columns" ng-if="!column.onDraw && column.dataType === 4">{{renderDateColumn(item[column.name])}}</td>
@@ -63,13 +63,14 @@ namespace cs.directives
             
         private unboundLink($scope: IDatatableScope, $element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void {
             const self: DatatableDirective = this;
-
-            self.initialize($scope, $element);
-
+            
+            $scope.filter = filter;
             $scope.renderDateColumn = self.renderDateColumn.bind(self);
             $scope.renderDateStringColumn = self.renderDateStringColumn.bind(self);
             $scope.sort = sort;
-
+            
+            self.initialize($scope, $element);
+            
             if ($scope.options && $scope.options.sort !== undefined && $scope.options.sort !== null) {
                 const column = $scope.options.columns.filter((column) => { return column.name === $scope.options.sort.columnName; })[0];
 
@@ -78,10 +79,75 @@ namespace cs.directives
                 }
             } 
 
+            function filter() {
+                if ($scope.options && ($scope.options.filter !== undefined && $scope.options.filter !== null && $scope.options.filter !== ''))
+                {
+                    $scope.filteredData = $scope.options.data.filter(function (item: any, index, data) {
+                        const columnLength = $scope.options.columns.length;
+                        let match: boolean = false;
+    
+                        for (let i = 0; i < columnLength; i++) {
+                            var column = $scope.options.columns[i];
+    
+                            if (item[column.name]) {
+                                switch (column.dataType) {
+                                    case DataTableColumnType.string:
+                                        if (item[column.name].toLowerCase().indexOf($scope.options.filter.toLowerCase()) > -1) {
+                                            match = true;
+                                        }
+                                        break;
+                                    case DataTableColumnType.number:
+                                        if (item[column.name].toString().toLowerCase().indexOf($scope.options.filter.toLowerCase()) > -1) {
+                                            match = true;
+                                        }
+                                        break;
+                                    case DataTableColumnType.dateString:
+                                        const date = column.onDateStringConvert ? column.onDateStringConvert(item[column.name]) : new Date(item[column.name]);
+                                        const matchDateStrimg = column.onDraw ? column.onDraw({ model: item, value: item[column.name]}) : self.renderDateColumn(new Date(item[column.name]));
+                                        
+                                        if (matchDateStrimg.indexOf($scope.options.filter) > -1) {
+                                            match = true;
+                                        }
+
+                                        break;
+                                    case DataTableColumnType.date:
+                                        const matchDate = column.onDraw ? column.onDraw({ model: item, value: item[column.name]}) : self.renderDateColumn(new Date(item[column.name]));
+    
+                                        if (matchDate.indexOf($scope.options.filter) > -1) {
+                                            match = true;
+                                        }
+    
+                                        break;
+                                }
+                            }
+                        }
+    
+                        return match;
+                    });
+                }
+                else 
+                {
+                    $scope.filteredData = $scope.options.data;
+                }
+
+                // Sort
+                const column = $scope.options.columns.filter((column) => { return column.name === $scope.options.sort.columnName; })[0];
+                
+                if (column) {
+                    sort(column, $scope.options.sort.direction);
+                }
+
+                // Set pagination
+                if ($scope.paginationOptions.refresh) {
+                    $scope.paginationOptions.total = $scope.filteredData ? $scope.filteredData.length : 1; 
+                    $scope.paginationOptions.refresh();
+                }
+            }
+
             function sort(column: IDatatableColumn, direction: 'asc' | 'desc'): void {
                 $scope.options.sort = { columnName: column.name, direction: direction };
 
-                $scope.sorting.sortData($scope.options.data, $scope.options);
+                $scope.sorting.sortData($scope.filteredData, $scope.options);
 
                 self.scopeApply($scope);
             }
@@ -99,19 +165,26 @@ namespace cs.directives
 
                 if ($scope.options.data === undefined || $scope.options.data === null) {
                     $scope.options.data = [];
+                    $scope.filteredData = $scope.options.data.slice(0);
                 }
     
+                $scope.sorting = new DatatableSortModel();
+
+                $scope.$watch('options.filter', function() {
+                    $scope.filter();
+                });
+
                 $scope.svgSort = self.$sce.trustAsHtml(svgSort);
                 $scope.svgSortAsc = self.$sce.trustAsHtml(svgSortAsc);
                 $scope.svgSortDesc = self.$sce.trustAsHtml(svgSortDesc);
-                
+
                 $scope.paginationOptions = {
                     gap: 5,
                     pageSize: 5,
-                    total: $scope.options.data.length
+                    total: $scope.filteredData ? $scope.filteredData.length : 1
                 }
 
-                $scope.sorting = new DatatableSortModel();
+                $scope.filter();
 
                 $scope.initialized = true;
             }
@@ -166,7 +239,7 @@ namespace cs.directives
         cssClass: string;
         dataType: DataTableColumnType;
         onDateStringConvert?: (value: string) => Date;
-        onDraw?: (event: IDatatableColumnOnDrawEvent) => void;
+        onDraw?: (event: IDatatableColumnOnDrawEvent) => string;
         name: string;
         sortable: boolean;
         title: string;
@@ -180,6 +253,7 @@ namespace cs.directives
     export interface IDatatableOptions {
         columns: Array<IDatatableColumn>;
         data: Array<any>;
+        filter?: string;
         sort?: IDatatableSort;
         sortSecondare?: IDatatableSort;
     }
@@ -194,6 +268,8 @@ namespace cs.directives
     }
 
     export interface IDatatableScope extends ng.IScope {
+        filter: () => void;
+        filteredData: Array<any>;        
         initialized: boolean;
         options: IDatatableOptions;
         paginationOptions: IPaginationOptions;

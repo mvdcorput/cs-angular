@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <title>cs-angular demo dates</title>
+    <script src="../node_modules/angular/angular.min.js"></script>
+    <script src="../dist/cs-angular.js"></script>
+    <script src="app.js"></script>
+    <script src="filter-examples.controller.js"></script>
+    <style>
+        .container {
+            margin: 0 auto;
+            width: 700px;
+        }
+
+        .double-space-top { 
+            margin-top: 20px
+        }
+
+        .space-top { 
+            margin-top: 10px
+        }
+    </style>
+</head>
+
+<body ng-controller="FilterExamplesController">
+    <div class="container">
+        <h1>Datatable filter examples</h1>
+    </div>
+    <div class="container space-top">
+        <a href="index.html">Terug daar demo home</a>
+    </div>
+    <div class="container double-space-top">
+        <h1>Filter example</h1>
+    </div>
+    <div class="container space-top">
+        <input type="text" ng-model="datatableOptions.filter">
+    </div>
+    <div class="container space-top">
+        <div cs-datatable cs-options="datatableOptions"></div>
+    </div>
+</body>
+
+</html>

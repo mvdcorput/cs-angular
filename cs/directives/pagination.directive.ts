@@ -44,6 +44,8 @@ namespace cs.directives
 
             self.initialize($scope, $element);
 
+            $scope.options.refresh = refresh;
+
             $scope.firstPage = firstPage;
             $scope.lastPage = lastPage;
             $scope.nextPage = nextPage;
@@ -82,6 +84,10 @@ namespace cs.directives
                 setStartPage();
             }
 
+            function refresh() {
+                self.initialize($scope, $element);
+            }
+
             function setPage(page: number) {
                 $scope.options.page = page;
 
@@ -106,24 +112,12 @@ namespace cs.directives
                 $scope.svgPagerToEnd = self.$sce.trustAsHtml(svgPagerToEnd);
                 $scope.svgPagerToStart = self.$sce.trustAsHtml(svgPagerToStart);
 
-                setPages();
+                self.setPages($scope);
 
                 $scope.options.page = $scope.options.page ? $scope.options.page : 1;
                 $scope.startPage = 1;
 
-                $scope.$watch('options.total'), function() {
-                    setPages();
-                };
-
                 $scope.initialized = true;
-            }
-
-            function setPages() {
-                if ($scope.options.total == 0) {
-                    $scope.pages = [];
-                } else {
-                    $scope.pages = self.range(1, Math.ceil( $scope.options.total/ $scope.options.pageSize));
-                }
             }
         }
 
@@ -136,12 +130,23 @@ namespace cs.directives
 
             return result;
         }
+
+        private setPages($scope: IPaginationScope): void {
+            const self: PaginationDirective = this;
+
+            if ($scope.options.total == 0) {
+                $scope.pages = [];
+            } else {
+                $scope.pages = self.range(1, Math.ceil( $scope.options.total/ $scope.options.pageSize));
+            }
+        }
     }
     
     export interface IPaginationOptions {
         gap: number;
         page?: number;
         pageSize: number;
+        refresh?: () => void;
         total: number;
     }
 
