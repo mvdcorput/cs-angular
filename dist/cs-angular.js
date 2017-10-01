@@ -1,80 +1,14 @@
 var cs;
 (function (cs) {
     cs.app = angular.module('csAngular', []);
-})(cs || (cs = {}));
-var cs;
-(function (cs) {
-    var directives;
-    (function (directives) {
-        'use-strict';
-        var DatatablePageModel = /** @class */ (function () {
-            function DatatablePageModel() {
-                var self = this;
-                self.pagesGap = 5;
-                self.currentPage = 0;
-                self.groupedItems = [];
-                self.pagedItems = [];
+    cs.app.filter('startFrom', function () {
+        return function (input, start) {
+            if (input) {
+                return input.slice(start - 1);
             }
-            DatatablePageModel.prototype.firstPage = function () {
-                var self = this;
-                if (self.currentPage > 0) {
-                    self.currentPage = 0;
-                }
-            };
-            ;
-            DatatablePageModel.prototype.lastPage = function () {
-                var self = this;
-                if (self.currentPage < self.pagedItems.length - 1) {
-                    self.currentPage = self.pagedItems.length - 1;
-                }
-            };
-            ;
-            DatatablePageModel.prototype.nextPage = function () {
-                var self = this;
-                if (self.currentPage < self.pagedItems.length - 1) {
-                    self.currentPage++;
-                }
-            };
-            ;
-            DatatablePageModel.prototype.prevPage = function () {
-                var self = this;
-                if (self.currentPage > 0) {
-                    self.currentPage--;
-                }
-            };
-            ;
-            DatatablePageModel.prototype.range = function (size, start, end) {
-                var self = this;
-                var ret = [];
-                if (size < end) {
-                    end = size;
-                    start = size - self.pagesGap;
-                    if (start < 0) {
-                        start = 0;
-                    }
-                }
-                for (var i = start; i < end; i++) {
-                    ret.push(i);
-                }
-                return ret;
-            };
-            ;
-            DatatablePageModel.prototype.setPages = function (data, pageSize) {
-                var self = this;
-                self.pagedItems = [];
-                for (var i = 0; i < data.length; i++) {
-                    if (i % pageSize === 0) {
-                        self.pagedItems[Math.floor(i / pageSize)] = [data[i]];
-                    }
-                    else {
-                        self.pagedItems[Math.floor(i / pageSize)].push(data[i]);
-                    }
-                }
-            };
-            return DatatablePageModel;
-        }());
-        directives.DatatablePageModel = DatatablePageModel;
-    })(directives = cs.directives || (cs.directives = {}));
+            return [];
+        };
+    });
 })(cs || (cs = {}));
 var cs;
 (function (cs) {
@@ -194,7 +128,7 @@ var cs;
                 this.scope = {
                     options: '=csOptions'
                 };
-                this.template = "\n        " + cssStyle + "\n        <table ng-if=\"initialized === true\">\n            <thead>\n                <tr>\n                    <th ng-repeat=\"column in options.columns\">\n                        <span>{{column.title}}</span>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSort\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName!==column.name\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortAsc\"\n                            ng-click=\"sort(column, 'desc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='asc'\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortDesc\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='desc'\"> \n                        </div>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr ng-repeat=\"item in paging.pagedItems[paging.currentPage]\"\n                    ng-class-even=\"'even'\">\n                    <td ng-repeat=\"column in options.columns\">{{item[column.name]}}</td>\n                </tr>\n            </tbody>\n            </tr>\n            </thead>\n            <tfoot>\n                <td colspan=\"{{options.columns.length}}\">\n                    <div class=\"pagination\">\n                        <ul>\n                            <li ng-if=\"paging.pagedItems.length<paging.pagesGap\">\n                                <a href ng-click=\"paging.firstPage()\" class=\"first\" ng-bind-html=\"svgPagerToStart\" ng-class=\"{disabled: paging.currentPage == 0}\"></a>\n                            </li>\n                            <li>\n                                <a href ng-click=\"paging.prevPage()\" class=\"prev\" ng-bind-html=\"svgPagerBackward\" ng-class=\"{disabled: paging.currentPage == 0}\"></a>\n                            </li>\n                            <li ng-repeat=\"n in paging.range(paging.pagedItems.length, paging.currentPage, paging.currentPage + paging.pagesGap) \"\n                                ng-class=\"{active: n == paging.currentPage}\"\n                                ng-click=\"setPage()\">\n                                <a href ng-bind=\"n + 1\" class=\"page\">1</a>\n                            </li>\n                            <li>\n                                <a href ng-click=\"paging.nextPage()\" class=\"next\" ng-bind-html=\"svgPagerForward\" ng-class=\"{disabled: paging.currentPage == paging.pagedItems.length - 1}\"></a>\n                            </li>\n                            <li ng-if=\"paging.pagedItems.length<paging.pagesGap\">\n                                <a href ng-click=\"paging.lastPage()\" class=\"last\" ng-bind-html=\"svgPagerToEnd\" ng-class=\"{disabled: paging.currentPage == paging.pagedItems.length - 1}\"></a>\n                            </li>\n                        </ul>\n                    </div>\n                </td>\n            </tfoot>                     \n        </table>\n        ";
+                this.template = "\n        " + cssStyle + "\n        <table ng-if=\"initialized === true\">\n            <thead>\n                <tr>\n                    <th ng-repeat=\"column in options.columns\">\n                        <span>{{column.title}}</span>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSort\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName!==column.name\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortAsc\"\n                            ng-click=\"sort(column, 'desc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='asc'\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortDesc\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='desc'\"> \n                        </div>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr ng-repeat=\"item in options.data | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index\"\n                    ng-class-even=\"'even'\">\n                    <td ng-repeat=\"column in options.columns\">{{item[column.name]}}</td>\n                </tr>\n            </tbody>\n            <tfoot>\n                <tr>\n                    <td colspan=\"{{options.columns.length}}\">\n                        <div cs-pagination cs-options=\"paginationOptions\">\n                    </td>\n                </tr>\n            </tfoot>   \n        </table>\n        ";
                 var self = this;
                 self.link = self.unboundLink.bind(self);
             }
@@ -203,16 +137,13 @@ var cs;
                 self.initialize($scope, $element);
                 $scope.sort = sort;
                 if ($scope.options.sort !== undefined && $scope.options.sort !== null) {
-                    var column = $scope.options.columns.filter(function (column) { column.name === $scope.options.sort.columnName; })[0];
+                    var column = $scope.options.columns.filter(function (column) { return column.name === $scope.options.sort.columnName; })[0];
                     sort(column, $scope.options.sort.direction);
-                }
-                else {
-                    $scope.paging.setPages($scope.options.data, $scope.options.paging.pageSize);
                 }
                 function sort(column, direction) {
                     $scope.options.sort = { columnName: column.name, direction: direction };
                     $scope.sorting.sortData($scope.options.data, $scope.options);
-                    $scope.paging.setPages($scope.options.data, $scope.options.paging.pageSize);
+                    self.scopeApply($scope);
                 }
             };
             DatatableDirective.prototype.initialize = function ($scope, $element) {
@@ -225,21 +156,29 @@ var cs;
                     if ($scope.options.data === undefined || $scope.options.data === null) {
                         $scope.options.data = [];
                     }
-                    $scope.svgPagerBackward = self.$sce.trustAsHtml(svgPagerBackward);
-                    $scope.svgPagerForward = self.$sce.trustAsHtml(svgPagerForward);
-                    $scope.svgPagerToEnd = self.$sce.trustAsHtml(svgPagerToEnd);
-                    $scope.svgPagerToStart = self.$sce.trustAsHtml(svgPagerToStart);
                     $scope.svgSort = self.$sce.trustAsHtml(svgSort);
                     $scope.svgSortAsc = self.$sce.trustAsHtml(svgSortAsc);
                     $scope.svgSortDesc = self.$sce.trustAsHtml(svgSortDesc);
-                    $scope.paging = new directives.DatatablePageModel();
-                    $scope.sorting = new directives.DatatableSortModel();
-                    $scope.options.paging.pageSize = 5;
-                    $scope.setPage = function () {
-                        $scope.paging.currentPage = this.n;
+                    $scope.paginationOptions = {
+                        gap: 5,
+                        pageSize: 5,
+                        total: $scope.options.data.length
                     };
+                    $scope.sorting = new directives.DatatableSortModel();
                     $scope.initialized = true;
                 }
+            };
+            DatatableDirective.prototype.scopeApply = function ($scope) {
+                if ($scope == undefined && $scope == null) {
+                    return;
+                }
+                var result = false;
+                var phase = $scope.$root.$$phase;
+                if (phase !== '$apply' && phase !== '$digest') {
+                    $scope.$apply();
+                    result = true;
+                }
+                return result;
             };
             return DatatableDirective;
         }());
@@ -251,15 +190,110 @@ var cs;
             DataTableColumnType[DataTableColumnType["date"] = 4] = "date";
             DataTableColumnType[DataTableColumnType["dateJson"] = 5] = "dateJson";
         })(DataTableColumnType = directives.DataTableColumnType || (directives.DataTableColumnType = {}));
-        var cssStyle = "\n        <style>\n            .cs-datatable table {\n                border-collapse: collapse;\n            }\n\n            .cs-datatable table thead {\n                background-color: #000;\n                color: white;\n            }\n\n            .cs-datatable table td,\n            .cs-datatable table th {\n                padding: 5px;\n            }\n\n            .cs-datatable table th span {\n                display:inline-block;\n            }\n\n            .cs-datatable table th .icon-sort {\n                cursor: pointer;\n                display:inline-block;\n                float: right;\n                height: 1em;\n                width: 1em;\n            }\n\n            .cs-datatable .pagination ul {\n                display: inline-block;\n                list-style: none;\n                margin: 0;\n                padding: 0;\n            }\n\n            .cs-datatable .pagination ul li {\n                display: inline-block;\n            }\n\n            .cs-datatable .pagination a.first,\n            .cs-datatable .pagination a.last,\n            .cs-datatable .pagination a.next,\n            .cs-datatable .pagination a.prev {\n                display: inline-block;\n                float: left;\n                height: 1em;\n                padding: 5px;\n                width: 1em;\n            }\n\n            .cs-datatable .pagination a.first{\n                padding-left: 0;\n            }\n\n            .cs-datatable .pagination a.last{\n                padding-right: 0;\n            }\n\n            .cs-datatable .pagination a.page {\n                display: inline-block;\n                float: left;\n                padding: 5px;\n            }\n\n            .cs-datatable .pagination .active {\n                font-weight: bold;\n            }\n\n            .cs-datatable .pagination svg path {\n                fill: #000;\n            }\n\n            .cs-datatable .pagination a.disabled {\n                cursor: default;\n            }\n\n            .cs-datatable .pagination a.disabled svg path {\n                fill: #aaa;\n            }\n        </style>\n    ";
-        var svgPagerBackward = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1683 141q19-19 32-13t13 32v1472q0 26-13 32t-32-13l-710-710q-9-9-13-19v710q0 26-13 32t-32-13l-710-710q-19-19-19-45t19-45l710-710q19-19 32-13t13 32v710q4-10 13-19z\" fill=\"#fff\"/></svg>\n    ";
-        var svgPagerForward = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M109 1651q-19 19-32 13t-13-32v-1472q0-26 13-32t32 13l710 710q9 9 13 19v-710q0-26 13-32t32 13l710 710q19 19 19 45t-19 45l-710 710q-19 19-32 13t-13-32v-710q-4 10-13 19z\" fill=\"#fff\"/></svg>\n    ";
-        var svgPagerToEnd = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M45 1651q-19 19-32 13t-13-32v-1472q0-26 13-32t32 13l710 710q9 9 13 19v-710q0-26 13-32t32 13l710 710q9 9 13 19v-678q0-26 19-45t45-19h128q26 0 45 19t19 45v1408q0 26-19 45t-45 19h-128q-26 0-45-19t-19-45v-678q-4 10-13 19l-710 710q-19 19-32 13t-13-32v-710q-4 10-13 19z\" fill=\"#fff\"/></svg>\n    ";
-        var svgPagerToStart = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1747 141q19-19 32-13t13 32v1472q0 26-13 32t-32-13l-710-710q-9-9-13-19v710q0 26-13 32t-32-13l-710-710q-9-9-13-19v678q0 26-19 45t-45 19h-128q-26 0-45-19t-19-45v-1408q0-26 19-45t45-19h128q26 0 45 19t19 45v678q4-10 13-19l710-710q19-19 32-13t13 32v710q4-10 13-19z\" fill=\"#fff\"/></svg>\n    ";
+        var cssStyle = "\n        <style>\n            .cs-datatable table {\n                border-collapse: collapse;\n            }\n\n            .cs-datatable table thead {\n                background-color: #000;\n                color: white;\n            }\n\n            .cs-datatable table td,\n            .cs-datatable table th {\n                padding: 5px;\n            }\n\n            .cs-datatable table th span {\n                display:inline-block;\n            }\n\n            .cs-datatable table th .icon-sort {\n                cursor: pointer;\n                display:inline-block;\n                float: right;\n                height: 1em;\n                width: 1em;\n            }\n        </style>\n    ";
         var svgSort = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1408 1088q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45zm0-384q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z\" fill=\"#fff\"/></svg>\n    ";
         var svgSortAsc = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z\" fill=\"#fff\"/></svg>\n    ";
         var svgSortDesc = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1395 1184q0 13-10 23l-50 50q-10 10-23 10t-23-10l-393-393-393 393q-10 10-23 10t-23-10l-50-50q-10-10-10-23t10-23l466-466q10-10 23-10t23 10l466 466q10 10 10 23z\" fill=\"#fff\"/></svg>\n    ";
         cs.app.directive('csDatatable', ['$sce', function ($sce) { return new DatatableDirective($sce); }]);
+    })(directives = cs.directives || (cs.directives = {}));
+})(cs || (cs = {}));
+var cs;
+(function (cs) {
+    var directives;
+    (function (directives) {
+        'use-strict';
+        var PaginationDirective = /** @class */ (function () {
+            function PaginationDirective($sce) {
+                this.$sce = $sce;
+                this.restrict = 'EA';
+                this.scope = {
+                    options: '=csOptions'
+                };
+                this.template = "\n        " + cssStyle + "\n        <ul>\n            <li ng-if=\"pages.length>options.gap\">\n                <a href=\"\" ng-click=\"firstPage()\" class=\"first\" ng-bind-html=\"svgPagerToStart\" ng-class=\"{disabled: options.page == 1}\"></a>\n            </li>\n            <li ng-if=\"pages.length>0\">\n                <a href=\"\" ng-click=\"prevPage()\" class=\"prev\" ng-bind-html=\"svgPagerBackward\" ng-class=\"{disabled: options.page == 1}\"></a>\n            </li>\n            <li ng-repeat=\"page in pages | startFrom: startPage | limitTo: options.gap\"\n                ng-class=\"{active: page === options.page}\">\n                <a href=\"\" ng-click=\"setPage(page)\" class=\"page\">{{page}}</a>\n            </li>\n            <li ng-if=\"pages.length>0\">\n                <a href=\"\" ng-click=\"nextPage()\" class=\"next\" ng-bind-html=\"svgPagerForward\" ng-class=\"{disabled: options.page == pages.length}\"></a>\n            </li>\n            <li ng-if=\"pages.length>options.gap\">\n                <a href=\"\" ng-click=\"lastPage()\" class=\"last\" ng-bind-html=\"svgPagerToEnd\" ng-class=\"{disabled: options.page == pages.length}\"></a>\n            </li>\n        </ul>\n        ";
+                var self = this;
+                self.link = self.unboundLink.bind(self);
+            }
+            PaginationDirective.prototype.unboundLink = function ($scope, $element, attrs) {
+                var self = this;
+                self.initialize($scope, $element);
+                $scope.firstPage = firstPage;
+                $scope.lastPage = lastPage;
+                $scope.nextPage = nextPage;
+                $scope.prevPage = prevPage;
+                $scope.setPage = setPage;
+                function firstPage() {
+                    if ($scope.options.page > 1) {
+                        $scope.options.page = 1;
+                    }
+                    setStartPage();
+                }
+                function lastPage() {
+                    if ($scope.options.page < $scope.pages.length - 1) {
+                        $scope.options.page = $scope.pages.length;
+                    }
+                    setStartPage();
+                }
+                function nextPage() {
+                    if ($scope.options.page < $scope.pages.length) {
+                        $scope.options.page++;
+                    }
+                    setStartPage();
+                }
+                function prevPage() {
+                    if ($scope.options.page > 1) {
+                        $scope.options.page--;
+                    }
+                    setStartPage();
+                }
+                function setPage(page) {
+                    $scope.options.page = page;
+                    setStartPage();
+                }
+                function setStartPage() {
+                    var page = Math.ceil($scope.options.page / $scope.options.gap);
+                    $scope.startPage = page == 1 ? 1 : ((page - 1) * $scope.options.gap) + 1;
+                }
+            };
+            PaginationDirective.prototype.initialize = function ($scope, $element) {
+                var self = this;
+                $element.addClass('cs-pagination');
+                if ($scope.options !== undefined && $scope.options !== null) {
+                    $scope.svgPagerBackward = self.$sce.trustAsHtml(svgPagerBackward);
+                    $scope.svgPagerForward = self.$sce.trustAsHtml(svgPagerForward);
+                    $scope.svgPagerToEnd = self.$sce.trustAsHtml(svgPagerToEnd);
+                    $scope.svgPagerToStart = self.$sce.trustAsHtml(svgPagerToStart);
+                    setPages();
+                    $scope.options.page = $scope.options.page ? $scope.options.page : 1;
+                    $scope.startPage = 1;
+                    $scope.$watch('options.total'), function () {
+                        setPages();
+                    };
+                    $scope.initialized = true;
+                }
+                function setPages() {
+                    if ($scope.options.total == 0) {
+                        $scope.pages = [];
+                    }
+                    else {
+                        $scope.pages = self.range(1, Math.ceil($scope.options.total / $scope.options.pageSize));
+                    }
+                }
+            };
+            PaginationDirective.prototype.range = function (start, end) {
+                var result = [];
+                for (var i = start; i <= end; i++) {
+                    result.push(i);
+                }
+                return result;
+            };
+            return PaginationDirective;
+        }());
+        var cssStyle = "\n        <style>\n            .cs-pagination {\n                color: #000;\n            }\n\n            .cs-pagination ul {\n                display: inline-block;\n                list-style: none;\n                margin: 0;\n                padding: 0;\n            }\n\n            .cs-pagination ul li {\n                display: inline-block;\n            }\n\n            .cs-pagination a.first,\n            .cs-pagination a.last,\n            .cs-pagination a.next,\n            .cs-pagination a.prev {\n                display: inline-block;\n                float: left;\n                height: 1em;\n                padding: 5px;\n                width: 1em;\n            }\n\n            .cs-pagination a.first {\n                padding-left: 0;\n            }\n\n            .cs-pagination a.last {\n                padding-right: 0;\n            }\n\n            .cs-pagination a.page {\n                display: inline-block;\n                float: left;\n                height: 1em;\n                padding: 5px;\n            }\n\n            .cs-pagination .active {\n                font-weight: bold;\n            }\n\n            .cs-pagination svg path {\n                fill: #000;\n            }\n\n            .cs-pagination a.disabled {\n                cursor: default;\n            }\n\n            .cs-pagination a.disabled svg path {\n                fill: #aaa;\n            }\n        </style>\n    ";
+        var svgPagerBackward = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1683 141q19-19 32-13t13 32v1472q0 26-13 32t-32-13l-710-710q-9-9-13-19v710q0 26-13 32t-32-13l-710-710q-19-19-19-45t19-45l710-710q19-19 32-13t13 32v710q4-10 13-19z\" fill=\"#fff\"/></svg>\n    ";
+        var svgPagerForward = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M109 1651q-19 19-32 13t-13-32v-1472q0-26 13-32t32 13l710 710q9 9 13 19v-710q0-26 13-32t32 13l710 710q19 19 19 45t-19 45l-710 710q-19 19-32 13t-13-32v-710q-4 10-13 19z\" fill=\"#fff\"/></svg>\n    ";
+        var svgPagerToEnd = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M45 1651q-19 19-32 13t-13-32v-1472q0-26 13-32t32 13l710 710q9 9 13 19v-710q0-26 13-32t32 13l710 710q9 9 13 19v-678q0-26 19-45t45-19h128q26 0 45 19t19 45v1408q0 26-19 45t-45 19h-128q-26 0-45-19t-19-45v-678q-4 10-13 19l-710 710q-19 19-32 13t-13-32v-710q-4 10-13 19z\" fill=\"#fff\"/></svg>\n    ";
+        var svgPagerToStart = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1747 141q19-19 32-13t13 32v1472q0 26-13 32t-32-13l-710-710q-9-9-13-19v710q0 26-13 32t-32-13l-710-710q-9-9-13-19v678q0 26-19 45t-45 19h-128q-26 0-45-19t-19-45v-1408q0-26 19-45t45-19h128q26 0 45 19t19 45v678q4-10 13-19l710-710q19-19 32-13t13 32v710q4-10 13-19z\" fill=\"#fff\"/></svg>\n    ";
+        cs.app.directive('csPagination', ['$sce', function ($sce) { return new PaginationDirective($sce); }]);
     })(directives = cs.directives || (cs.directives = {}));
 })(cs || (cs = {}));
 //# sourceMappingURL=cs-angular.js.map

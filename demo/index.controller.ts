@@ -1,4 +1,3 @@
-
 namespace cs.demo {
     'use-strict';
 
@@ -13,6 +12,16 @@ namespace cs.demo {
         setupDatatable() {
             const self: IndexController = this;
             
+            // Set demo data
+            const demoData = self.cloneArray(DemoData);
+            for (let i = 0; i < 50; i++) {
+                demoData.push.apply(demoData, self.cloneArray(DemoData));
+            }
+            for (let j = 0, length = demoData.length; j < length; j++) {
+                demoData[j].id = j + 1;
+            }
+
+            // Set datatable options
             self.$scope.datatableOptions = {
                 columns: [
                     {
@@ -33,7 +42,7 @@ namespace cs.demo {
                         cssClass: '',
                         dataType: 1,
                         name: 'street',
-                        sortable: false,
+                        sortable: true,
                         title: 'Straat'
                     },
                     {
@@ -51,24 +60,18 @@ namespace cs.demo {
                         title: 'Stad'
                     }
                 ],
-                data: DemoData,
-                paging: {
-                    pageSize: 10
-                }
+                data: demoData,
+                sort: { columnName: 'id', direction: 'asc' }
             };
+        }
 
-            self.$scope.datatableOptions1 = JSON.parse(JSON.stringify(self.$scope.datatableOptions));
-            self.$scope.datatableOptions2 = JSON.parse(JSON.stringify(self.$scope.datatableOptions));
-            self.$scope.datatableOptions3 = JSON.parse(JSON.stringify(self.$scope.datatableOptions));
+        private cloneArray(source: Array<any>): Array<any> {
+            return JSON.parse(JSON.stringify(source.slice(0)));
         }
     }
 
     interface IndexScope extends ng.IScope {
         datatableOptions: cs.directives.IDatatableOptions;
-        datatableOptions1: cs.directives.IDatatableOptions;
-        datatableOptions2: cs.directives.IDatatableOptions;
-        datatableOptions3: cs.directives.IDatatableOptions;
-        
     }
 
     const DemoData: Array<any> = [
@@ -77,12 +80,12 @@ namespace cs.demo {
         { id: 3, name: 'Winod Soekarnsingh', street: 'Andersdonk 12', zipcode: '4824 DH', city: 'Breda'},
         { id: 4, name: 'Benny van der Kolk', street: 'Oostendestraat 2', zipcode: '4813 AC', city: 'Breda'},
         { id: 5, name: 'Aart Staartjes', street: 'Barensdonk 86', zipcode: '4824 DG', city: 'Breda'},
-        { id: 11, name: 'Martijn van der Corput', street: 'Padakker 21', zipcode: '4824 SV', city: 'Breda'},
+        { id: 11, name: 'Martijn van der Corput', street: 'Gouddonk 18', zipcode: '4824 SX', city: 'Breda'},
         { id: 12, name: 'Hans van der Beuken', street: 'Bellenbos 45', zipcode: '4850 GF', city: 'Ulvenhout'},
         { id: 13, name: 'Winod Soekarnsingh', street: 'Andersdonk 12', zipcode: '4824 DH', city: 'Breda'},
         { id: 14, name: 'Benny van der Kolk', street: 'Oostendestraat 2', zipcode: '4813 AC', city: 'Breda'},
         { id: 15, name: 'Aart Staartjes', street: 'Barensdonk 86', zipcode: '4824 DG', city: 'Breda'},
-        { id: 21, name: 'Martijn van der Corput', street: 'Padakker 21', zipcode: '4824 SV', city: 'Breda'},
+        { id: 21, name: 'Martijn van der Corput', street: 'Gouddonk 18', zipcode: '4824 SX', city: 'Breda'},
         { id: 22, name: 'Hans van der Beuken', street: 'Bellenbos 45', zipcode: '4850 GF', city: 'Ulvenhout'},
         { id: 23, name: 'Winod Soekarnsingh', street: 'Andersdonk 12', zipcode: '4824 DH', city: 'Breda'},
         { id: 24, name: 'Benny van der Kolk', street: 'Oostendestraat 2', zipcode: '4813 AC', city: 'Breda'},
