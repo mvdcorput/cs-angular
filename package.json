@@ -5,6 +5,8 @@
     "devDependencies": {
         "@types/angular": "1.6.32",
         "minifier": "0.8.1",
+        "typedoc": "^0.9.0",
+        "typedoc-plugin-sourcefile-url": "^1.0.3",
         "typescript": "2.5.2"
     },
     "dependencies": {
@@ -14,9 +16,12 @@
     "main": "dist/cs-angular.js",
     "typings": "dist/cs-angular.d.ts",
     "scripts": {
-        "postinstall": "npm run tsc",
-        "tsc": "tsc -p cs && tsc -p demo && minify dist/cs-angular.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "npm run tsc && npm run minify-css && npm run generate-docs",
+        "generate-docs": "typedoc -sourcefile-url-prefix \"https://github.com/mvdcorput/cs-angular/tree/master/cs/\" --mode file --includes cs --out dist/docs cs",
+        "minify-css": "minify cs/cs-angular.css --output dist/cs-angular.min.css",
+        "postinstall": "npm run build",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "tsc": "tsc -p cs && tsc -p demo"
     },
     "repository": {
         "type": "git",

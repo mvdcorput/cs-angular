@@ -1,6 +1,8 @@
 namespace cs.demo {
     'use-strict';
 
+    import IDatatableOptions = cs.directives.IDatatableOptions;
+    
     class FilterExamplesController {
 
         constructor(public $scope: FilterExamplesScope) {
@@ -16,7 +18,7 @@ namespace cs.demo {
             self.$scope.datatableOptions = self.setupDatatable(self.cloneArray(DemoData, true));    
         }
 
-        private setupDatatable(data : Array<any>): cs.directives.IDatatableOptions {
+        private setupDatatable(data : Array<any>): IDatatableOptions {
             const self: FilterExamplesController = this;
 
             // Set datatable options
@@ -76,7 +78,7 @@ namespace cs.demo {
     }
 
     interface FilterExamplesScope extends ng.IScope {
-        datatableOptions: cs.directives.IDatatableOptions;
+        datatableOptions: IDatatableOptions;
     }
 
     const DemoData: Array<any> = [

@@ -1,6 +1,10 @@
 namespace cs.demo {
     'use-strict';
 
+    import IDatatableColumn = cs.directives.IDatatableColumn;
+    import IDatatableColumnOnDrawEvent= cs.directives.IDatatableColumnOnDrawEvent;
+    import IDatatableOptions = cs.directives.IDatatableOptions;
+
     class DateExamplesController {
 
         constructor(public $scope: DateExamplesScope) {
@@ -31,7 +35,7 @@ namespace cs.demo {
                 title: 'Geboortedatum'
             }, self.cloneArray(DemoData)); 
 
-            function onBirthdateDraw(event: cs.directives.IDatatableColumnOnDrawEvent): string {
+            function onBirthdateDraw(event: IDatatableColumnOnDrawEvent): string {
                 var date = event.value as Date;
                 var year = date.getFullYear(); 
                 var month = date.getMonth() + 1;
@@ -54,7 +58,7 @@ namespace cs.demo {
             }, self.cloneArray(DemoData, true)); 
         }
 
-        private setupDatatable(dateColumn: cs.directives.IDatatableColumn, data : Array<any>): cs.directives.IDatatableOptions {
+        private setupDatatable(dateColumn: IDatatableColumn, data : Array<any>): IDatatableOptions {
             const self: DateExamplesController = this;
 
             // Set datatable options
@@ -101,7 +105,7 @@ namespace cs.demo {
                 sort: { columnName: 'id', direction: 'asc' }
             };
 
-            function onBirthdateDraw(event: cs.directives.IDatatableColumnOnDrawEvent): string {
+            function onBirthdateDraw(event: IDatatableColumnOnDrawEvent): string {
                 var date = event.value as Date;
                 var year = date.getFullYear(); 
                 var month = date.getMonth() + 1;
@@ -121,9 +125,9 @@ namespace cs.demo {
     }
 
     interface DateExamplesScope extends ng.IScope {
-        datatableOptions1: cs.directives.IDatatableOptions;
-        datatableOptions2: cs.directives.IDatatableOptions;
-        datatableOptions3: cs.directives.IDatatableOptions;
+        datatableOptions1: IDatatableOptions;
+        datatableOptions2: IDatatableOptions;
+        datatableOptions3: IDatatableOptions;
     }
 
     const DemoData: Array<any> = [

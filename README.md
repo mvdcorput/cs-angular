@@ -3,3 +3,4 @@
 Angular directives
 
 - Datatable 
+- Pagination

@@ -1,5 +1,9 @@
 namespace cs.demo {
     'use-strict';
+    
+    import IDatatableColumnOnDrawEvent = cs.directives.IDatatableColumnOnDrawEvent;
+    import IDatatableOptions = cs.directives.IDatatableOptions;
+    
 
     class IndexController {
 
@@ -73,7 +77,7 @@ namespace cs.demo {
                 sort: { columnName: 'id', direction: 'asc' }
             };
 
-            function onBirthdateDraw(event: cs.directives.IDatatableColumnOnDrawEvent): string {
+            function onBirthdateDraw(event: IDatatableColumnOnDrawEvent): string {
                 var date = event.value as Date;
                 var year = date.getFullYear(); 
                 var month = date.getMonth() + 1;
@@ -93,11 +97,11 @@ namespace cs.demo {
     }
 
     interface IndexScope extends ng.IScope {
-        datatableOptions: cs.directives.IDatatableOptions;
+        datatableOptions: IDatatableOptions;
     }
 
     const DemoData: Array<any> = [
-        { id: 1, name: 'Martijn van der Corput', street: 'Gouddonk 18', zipcode: '4824 SX', birthdate: new Date(1979,1,1), city: 'Breda'},
+        { id: 1, name: 'Martijn van sder Corput', street: 'Gouddonk 18', zipcode: '4824 SX', birthdate: new Date(1979,1,1), city: 'Breda'},
         { id: 2, name: 'Hans van der Beuken', street: 'Bellenbos 45', zipcode: '4850 GF', birthdate: new Date(1984,4,6), city: 'Ulvenhout'},
         { id: 3, name: 'Winod Soekarnsingh', street: 'Andersdonk 12', zipcode: '4824 DH', birthdate: new Date(1984,5,5), city: 'Breda'},
         { id: 4, name: 'Benny van der Kolk', street: 'Oostendestraat 2', zipcode: '4813 AC', birthdate: new Date(1982,10,24), city: 'Breda'},

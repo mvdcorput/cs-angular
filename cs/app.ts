@@ -1,14 +1,16 @@
 namespace cs
 {
-    export const app = angular.module('csAngular', []);
+    export const app = angular ? angular.module('csAngular', []) : null;
 
-    app.filter('startFrom', function() {
-        return function(input: Array<any>, start: number) {
-            if (input) {
-                return input.slice(start-1);
+    if (app) {
+        app.filter('startFrom', function() {
+            return function(input: Array<any>, start: number) {
+                if (input) {
+                   return input.slice(start-1);
+                }  
+
+                return [];
             }
-
-            return [];
-        }
-    });
+        });         
+    }
 }

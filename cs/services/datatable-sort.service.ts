@@ -1,10 +1,14 @@
-namespace cs.directives
+namespace cs.services
 {
     'use-strict';
     
-    export class DatatableSortModel {
-        public sortData(data: Array<any>, options: cs.directives.IDatatableOptions ): void {
-            const self: DatatableSortModel = this;
+    import DataTableColumnType = cs.directives.DataTableColumnType;
+    import IDatatableColumn = cs.directives.IDatatableColumn;
+    import IDatatableOptions = cs.directives.IDatatableOptions;
+
+    class DatatableSortService implements IDatatableSortService {
+        public sortData(data: Array<any>, options: IDatatableOptions ): void {
+            const self: DatatableSortService = this;
 
             const column = options.columns.filter((column) => { return column.name === options.sort.columnName })[0];
 
@@ -16,10 +20,10 @@ namespace cs.directives
             }
         }
 
-        public sortDataDynamic(type: 'asc' | 'desc', column: cs.directives.IDatatableColumn) {
-            const self: DatatableSortModel = this;
+        private sortDataDynamic(type: 'asc' | 'desc', column: IDatatableColumn) {
+            const self: DatatableSortService = this;
 
-            if (column.dataType === cs.directives.DataTableColumnType.number) {
+            if (column.dataType === DataTableColumnType.number) {
                 return function (a, b) {
                     const propA = a[column.name] as number;
                     const propB = b[column.name] as number;
@@ -32,7 +36,7 @@ namespace cs.directives
                 }
             }
 
-            if (column.dataType === cs.directives.DataTableColumnType.string) {
+            if (column.dataType === DataTableColumnType.string) {
                 return function (a, b) {
                     let propA = a[column.name] as string;
                     let propB = b[column.name] as string;
@@ -51,7 +55,7 @@ namespace cs.directives
                 }
             }
 
-            if (column.dataType === cs.directives.DataTableColumnType.date) {
+            if (column.dataType === DataTableColumnType.date) {
                 return function (a, b) {
                     const propA = a[column.name];
                     const propB = b[column.name];
@@ -66,7 +70,7 @@ namespace cs.directives
                 }
             }
 
-            if (column.dataType === cs.directives.DataTableColumnType.dateString) {
+            if (column.dataType === DataTableColumnType.dateString) {
                 return function (a, b) {
                     const propA = a[column.name];
                     const propB = b[column.name];
@@ -82,14 +86,14 @@ namespace cs.directives
             }
         }
 
-        public sortDataMultipleDynamic(sortType: 'asc' | 'desc', ...columns: cs.directives.IDatatableColumn[]){
-                const self: DatatableSortModel = this;
-                /*
-                 * save the arguments object as it will be overwritten
-                 * note that arguments object is an array-like object
-                 * consisting of the names of the properties to sort by
-                 */
-                return function (obj1, obj2) {
+        private sortDataMultipleDynamic(sortType: 'asc' | 'desc', ...columns: IDatatableColumn[]){
+            const self: DatatableSortService = this;
+            /*
+            * save the arguments object as it will be overwritten
+            * note that arguments object is an array-like object
+            * consisting of the names of the properties to sort by
+            */
+            return function (obj1, obj2) {
                     var i = 0, result = 0, numberOfProperties = columns.length;
                     /* try getting a different result from 0 (equal)
                      * as long as we have extra properties to compare
@@ -99,13 +103,30 @@ namespace cs.directives
                             result = self.sortDataDynamic(sortType, columns[i])(obj1, obj2);
                         } else {
                             result = self.sortDataDynamic('asc', columns[i])(obj1, obj2);
-                        }
-    
-                        i++;
                     }
-
-                    return result;
+    
+                    i++;
                 }
+
+                return result;
+            }
         }
+    }
+
+    /**
+     * Datatable sorting service
+     */
+    export interface IDatatableSortService
+    {
+        sortData: (
+            /** Array of objects */
+            data: Array<any>,  
+            /** Datatable options */
+            options: IDatatableOptions 
+        ) => void;
+    }
+
+    if (cs.app) {
+        cs.app.service('datatableSortService', [() => new DatatableSortService()]);
     }
 }

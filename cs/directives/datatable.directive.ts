@@ -12,7 +12,6 @@ namespace cs.directives
 
         public template = 
         `
-        ${cssStyle}
         <table ng-if="initialized === true">
             <thead>
                 <tr>
@@ -55,7 +54,8 @@ namespace cs.directives
         </table>
         `;
 
-        constructor(public $sce: ng.ISCEService) {
+        constructor(public $sce: ng.ISCEService, 
+                    public sorting: cs.services.IDatatableSortService) {
             const self: DatatableDirective = this;
             
             self.link = self.unboundLink.bind(self);
@@ -168,7 +168,7 @@ namespace cs.directives
                     $scope.filteredData = $scope.options.data.slice(0);
                 }
     
-                $scope.sorting = new DatatableSortModel();
+                $scope.sorting = self.sorting;
 
                 $scope.$watch('options.filter', function() {
                     $scope.filter();
@@ -227,47 +227,7 @@ namespace cs.directives
         }
     }
 
-    export enum DataTableColumnType {
-        string = 1,
-        number = 2,
-        boolean = 3,
-        date = 4,
-        dateString = 5
-    }
-
-    export interface IDatatableColumn {
-        cssClass: string;
-        dataType: DataTableColumnType;
-        onDateStringConvert?: (value: string) => Date;
-        onDraw?: (event: IDatatableColumnOnDrawEvent) => string;
-        name: string;
-        sortable: boolean;
-        title: string;
-    }
-
-    export interface IDatatableColumnOnDrawEvent {
-        value: any;
-        model: any;
-    }
-    
-    export interface IDatatableOptions {
-        columns: Array<IDatatableColumn>;
-        data: Array<any>;
-        filter?: string;
-        sort?: IDatatableSort;
-        sortSecondare?: IDatatableSort;
-    }
-    
-    export interface IDatatablePagingOptions {
-        pageSize: number;
-    }
-
-    export interface IDatatableSort {
-        columnName: string;
-        direction: 'asc' | 'desc';
-    }
-
-    export interface IDatatableScope extends ng.IScope {
+    interface IDatatableScope extends ng.IScope {
         filter: () => void;
         filteredData: Array<any>;        
         initialized: boolean;
@@ -276,63 +236,13 @@ namespace cs.directives
         renderDateColumn: (value: Date) => string;
         renderDateStringColumn: (value: string, dateConverter: (value: string) => Date) => string;
         sort: (column: IDatatableColumn, direction: 'asc' | 'desc') => void;
-        sorting: DatatableSortModel;
+        sorting: cs.services.IDatatableSortService;
         svgSort: string;
         svgSortAsc: string;
         svgSortDesc: string;
     }
 
-    const cssStyle: string =
-    `
-        <style>
-            .cs-datatable table {
-                border-collapse: collapse;
-            }
-
-            .cs-datatable table thead {
-                background-color: #000;
-                color: white;
-            }
-
-            .cs-datatable table td,
-            .cs-datatable table th {
-                padding: 5px;
-            }
-
-            .cs-datatable table th span {
-                display:inline-block;
-            }
-
-            .cs-datatable table th .icon-sort {
-                cursor: pointer;
-                display:inline-block;
-                float: right;
-                height: 1em;
-                width: 1em;
-            }
-        </style>
-    `;
-
-    const svgSort: string = 
-    `
-    <?xml version="1.0" encoding="utf-8"?>
-    <svg height="100%" width="100%" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1408 1088q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45zm0-384q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z" fill="#fff"/></svg>
-    `
-    ;
-
-    const svgSortAsc: string = 
-    `
-    <?xml version="1.0" encoding="utf-8"?>
-    <svg height="100%" width="100%" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z" fill="#fff"/></svg>
-    `
-    ;
-
-    const svgSortDesc: string = 
-    `
-    <?xml version="1.0" encoding="utf-8"?>
-    <svg height="100%" width="100%" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1395 1184q0 13-10 23l-50 50q-10 10-23 10t-23-10l-393-393-393 393q-10 10-23 10t-23-10l-50-50q-10-10-10-23t10-23l466-466q10-10 23-10t23 10l466 466q10 10 10 23z" fill="#fff"/></svg>
-    `
-    ;
-
-    cs.app.directive('csDatatable', ['$sce', ($sce) => new DatatableDirective($sce)])
+    if (cs.app) {
+        cs.app.directive('csDatatable', ['$sce', 'datatableSortService',  ($sce, datatableSortService) => new DatatableDirective($sce, datatableSortService)])
+    }
 }
