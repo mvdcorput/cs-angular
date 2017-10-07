@@ -21,7 +21,7 @@ For use in TypeScript applications, a ``cs-angular.d.ts`` file is present at ``.
 
 The API documentation is located at ``.\node_modules\cs-angular\dist\docs\index.html``
 
-A fully working demo is located at ``.\node_modules\cs-angular\demo\index.html``
+A typescript demo with examples is located at ``.\node_modules\cs-angular\demo\index.html``
 
 #### HTML
 
