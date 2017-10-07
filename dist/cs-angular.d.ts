@@ -88,19 +88,38 @@ declare namespace cs.directives {
     const svgPagerBackward: string;
     /** SVG image for datatable pagination forward navigation */
     const svgPagerForward: string;
-    /** SVG image for datatable pagination jump to last page navigation */
+    /** SVG image for datatable pagination jump to last page */
     const svgPagerToEnd: string;
-    /** SVG image for datatable pagination jump to first page navigation */
+    /** SVG image for datatable pagination jump to first pages */
     const svgPagerToStart: string;
     /**
      * Options for pagination directive: cs-pagination
      */
     interface IPaginationOptions {
+        /** Size of gap between navigation buttons (number of directly selectable items) */
         gap: number;
+        /** Number of current page that is being displayed */
         page?: number;
+        /** Number of items in page */
         pageSize: number;
+        paginationIcons?: IPaginationIcons;
+        /** Function that refreshes the datatable. Is bound at datatable initialisation */
         refresh?: () => void;
+        /** Total number of items */
         total: number;
+    }
+    /**
+     * Custom icons for pagination buttons
+     */
+    interface IPaginationIcons {
+        /** SVG image soure for datatable pagination backward navigation */
+        svgPagerBackward?: string;
+        /** SVG image soure for datatable pagination forward navigation */
+        svgPagerForward?: string;
+        /** SVG image soure for datatable pagination jump to last page */
+        svgPagerToEnd?: string;
+        /** SVG image soure for datatable pagination jump to first pages */
+        svgPagerToStart?: string;
     }
 }
 declare namespace cs.services {
@@ -109,10 +128,9 @@ declare namespace cs.services {
      * Datatable sorting service
      */
     interface IDatatableSortService {
-        sortData: (
-            /** Array of objects */
-            data: Array<any>, 
-            /** Datatable options */
-            options: IDatatableOptions) => void;
+        /**
+         * Sorts data in a dataset based on datatable options
+         */
+        sortData: (data: Array<any>, options: IDatatableOptions) => void;
     }
 }

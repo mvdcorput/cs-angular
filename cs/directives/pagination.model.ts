@@ -26,7 +26,7 @@ namespace cs.directives
     `
     ;
 
-    /** SVG image for datatable pagination jump to first page */
+    /** SVG image for datatable pagination jump to first pages */
     export const svgPagerToStart: string = 
     `
     <?xml version="1.0" encoding="utf-8"?>
@@ -38,15 +38,31 @@ namespace cs.directives
      * Options for pagination directive: cs-pagination
      */
     export interface IPaginationOptions {
-        /* Size of gap between navigation buttons (number of directly selectable items) */ 
+        /** Size of gap between navigation buttons (number of directly selectable items) */ 
         gap: number;
-        /* Number of current page that is being displayed */ 
+        /** Number of current page that is being displayed */ 
         page?: number;
-        /* Number of items in page */ 
+        /** Number of items in page */ 
         pageSize: number;
-        /* Function that refreshes the datatable. Is bound at datatable initialisation */ 
+        /* Custom svg icons */
+        paginationIcons?: IPaginationIcons,
+        /** Function that refreshes the datatable. Is bound at datatable initialisation */ 
         refresh?: () => void;
-        /* Total number of items */ 
+        /** Total number of items */ 
         total: number;
+    }
+
+    /**
+     * Custom icons for pagination buttons
+     */
+    export interface IPaginationIcons {
+        /** SVG image soure for datatable pagination backward navigation */
+        svgPagerBackward?: string;
+        /** SVG image soure for datatable pagination forward navigation */
+        svgPagerForward?: string;
+        /** SVG image soure for datatable pagination jump to last page */
+        svgPagerToEnd?: string;
+        /** SVG image soure for datatable pagination jump to first pages */
+        svgPagerToStart?: string;
     }
 }

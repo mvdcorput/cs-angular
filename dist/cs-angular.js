@@ -258,24 +258,25 @@ var cs;
                 var self = this;
                 $element.addClass('cs-pagination');
                 if ($scope.options !== undefined && $scope.options !== null) {
-                    $scope.svgPagerBackward = self.$sce.trustAsHtml(directives.svgPagerBackward);
-                    $scope.svgPagerForward = self.$sce.trustAsHtml(directives.svgPagerForward);
-                    $scope.svgPagerToEnd = self.$sce.trustAsHtml(directives.svgPagerToEnd);
-                    $scope.svgPagerToStart = self.$sce.trustAsHtml(directives.svgPagerToStart);
-                    self.setPages($scope);
-                    $scope.options.page = $scope.options.page ? $scope.options.page : 1;
-                    $scope.startPage = 1;
+                    self.initializeIcons($scope);
+                    self.initializePages($scope);
                     $scope.initialized = true;
                 }
             };
-            PaginationDirective.prototype.range = function (start, end) {
-                var result = [];
-                for (var i = start; i <= end; i++) {
-                    result.push(i);
+            PaginationDirective.prototype.initializeIcons = function ($scope) {
+                var self = this;
+                $scope.svgPagerBackward = self.$sce.trustAsHtml(directives.svgPagerBackward);
+                $scope.svgPagerForward = self.$sce.trustAsHtml(directives.svgPagerForward);
+                $scope.svgPagerToEnd = self.$sce.trustAsHtml(directives.svgPagerToEnd);
+                $scope.svgPagerToStart = self.$sce.trustAsHtml(directives.svgPagerToStart);
+                if ($scope.options.paginationIcons) {
+                    $scope.svgPagerBackward = self.$sce.trustAsHtml($scope.options.paginationIcons.svgPagerBackward ? $scope.options.paginationIcons.svgPagerBackward : directives.svgPagerBackward);
+                    $scope.svgPagerForward = self.$sce.trustAsHtml($scope.options.paginationIcons.svgPagerForward ? $scope.options.paginationIcons.svgPagerForward : directives.svgPagerForward);
+                    $scope.svgPagerToEnd = self.$sce.trustAsHtml($scope.options.paginationIcons.svgPagerToEnd ? $scope.options.paginationIcons.svgPagerToEnd : directives.svgPagerToEnd);
+                    $scope.svgPagerToStart = self.$sce.trustAsHtml($scope.options.paginationIcons.svgPagerToStart ? $scope.options.paginationIcons.svgPagerToStart : directives.svgPagerToStart);
                 }
-                return result;
             };
-            PaginationDirective.prototype.setPages = function ($scope) {
+            PaginationDirective.prototype.initializePages = function ($scope) {
                 var self = this;
                 if ($scope.options.total == 0) {
                     $scope.pages = [];
@@ -283,6 +284,15 @@ var cs;
                 else {
                     $scope.pages = self.range(1, Math.ceil($scope.options.total / $scope.options.pageSize));
                 }
+                $scope.options.page = $scope.options.page ? $scope.options.page : 1;
+                $scope.startPage = 1;
+            };
+            PaginationDirective.prototype.range = function (start, end) {
+                var result = [];
+                for (var i = start; i <= end; i++) {
+                    result.push(i);
+                }
+                return result;
             };
             return PaginationDirective;
         }());
@@ -300,9 +310,9 @@ var cs;
         directives.svgPagerBackward = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1683 141q19-19 32-13t13 32v1472q0 26-13 32t-32-13l-710-710q-9-9-13-19v710q0 26-13 32t-32-13l-710-710q-19-19-19-45t19-45l710-710q19-19 32-13t13 32v710q4-10 13-19z\" fill=\"#fff\"/></svg>\n    ";
         /** SVG image for datatable pagination forward navigation */
         directives.svgPagerForward = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M109 1651q-19 19-32 13t-13-32v-1472q0-26 13-32t32 13l710 710q9 9 13 19v-710q0-26 13-32t32 13l710 710q19 19 19 45t-19 45l-710 710q-19 19-32 13t-13-32v-710q-4 10-13 19z\" fill=\"#fff\"/></svg>\n    ";
-        /** SVG image for datatable pagination jump to last page navigation */
+        /** SVG image for datatable pagination jump to last page */
         directives.svgPagerToEnd = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M45 1651q-19 19-32 13t-13-32v-1472q0-26 13-32t32 13l710 710q9 9 13 19v-710q0-26 13-32t32 13l710 710q9 9 13 19v-678q0-26 19-45t45-19h128q26 0 45 19t19 45v1408q0 26-19 45t-45 19h-128q-26 0-45-19t-19-45v-678q-4 10-13 19l-710 710q-19 19-32 13t-13-32v-710q-4 10-13 19z\" fill=\"#fff\"/></svg>\n    ";
-        /** SVG image for datatable pagination jump to first page navigation */
+        /** SVG image for datatable pagination jump to first pages */
         directives.svgPagerToStart = "\n    <?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <svg height=\"100%\" width=\"100%\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1747 141q19-19 32-13t13 32v1472q0 26-13 32t-32-13l-710-710q-9-9-13-19v710q0 26-13 32t-32-13l-710-710q-9-9-13-19v678q0 26-19 45t-45 19h-128q-26 0-45-19t-19-45v-1408q0-26 19-45t45-19h128q26 0 45 19t19 45v678q4-10 13-19l710-710q19-19 32-13t13 32v710q4-10 13-19z\" fill=\"#fff\"/></svg>\n    ";
     })(directives = cs.directives || (cs.directives = {}));
 })(cs || (cs = {}));

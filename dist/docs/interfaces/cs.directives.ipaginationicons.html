@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IDatatableSortService | cs-angular</title>
+	<title>IPaginationIcons | cs-angular</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,13 +59,13 @@
 					<a href="../modules/cs.html">cs</a>
 				</li>
 				<li>
-					<a href="../modules/cs.services.html">services</a>
+					<a href="../modules/cs.directives.html">directives</a>
 				</li>
 				<li>
-					<a href="cs.services.idatatablesortservice.html">IDatatableSortService</a>
+					<a href="cs.directives.ipaginationicons.html">IPaginationIcons</a>
 				</li>
 			</ul>
-			<h1>Interface IDatatableSortService</h1>
+			<h1>Interface IPaginationIcons</h1>
 		</div>
 	</div>
 </header>
@@ -75,7 +75,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Datatable sorting service</p>
+						<p>Custom icons for pagination buttons</p>
 					</div>
 				</div>
 			</section>
@@ -83,14 +83,8 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IDatatableSortService</span>
+						<span class="target">IPaginationIcons</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implemented by</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../classes/cs.services.datatablesortservice.html" class="tsd-signature-type">DatatableSortService</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -100,7 +94,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cs.services.idatatablesortservice.html#sortdata" class="tsd-kind-icon">sort<wbr>Data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cs.directives.ipaginationicons.html#svgpagerbackward" class="tsd-kind-icon">svg<wbr>Pager<wbr>Backward</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cs.directives.ipaginationicons.html#svgpagerforward" class="tsd-kind-icon">svg<wbr>Pager<wbr>Forward</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cs.directives.ipaginationicons.html#svgpagertoend" class="tsd-kind-icon">svg<wbr>Pager<wbr>ToEnd</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cs.directives.ipaginationicons.html#svgpagertostart" class="tsd-kind-icon">svg<wbr>Pager<wbr>ToStart</a></li>
 							</ul>
 						</section>
 					</div>
@@ -109,42 +106,63 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="sortdata" class="tsd-anchor"></a>
-					<h3>sort<wbr>Data</h3>
-					<div class="tsd-signature tsd-kind-icon">sort<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<a name="svgpagerbackward" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> svg<wbr>Pager<wbr>Backward</h3>
+					<div class="tsd-signature tsd-kind-icon">svg<wbr>Pager<wbr>Backward<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/services/datatable-sort.service.ts#L124">services/datatable-sort.service.ts:124</a></li>
+							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/pagination.model.ts#L60">directives/pagination.model.ts:60</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Sorts data in a dataset based on datatable options</p>
+							<p>SVG image soure for datatable pagination backward navigation</p>
 						</div>
 					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, options<span class="tsd-signature-symbol">: </span><a href="cs.directives.idatatableoptions.html" class="tsd-signature-type">IDatatableOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>data: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-											</li>
-											<li>
-												<h5>options: <a href="cs.directives.idatatableoptions.html" class="tsd-signature-type">IDatatableOptions</a></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-									</li>
-								</ul>
-							</li>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="svgpagerforward" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> svg<wbr>Pager<wbr>Forward</h3>
+					<div class="tsd-signature tsd-kind-icon">svg<wbr>Pager<wbr>Forward<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/pagination.model.ts#L62">directives/pagination.model.ts:62</a></li>
 						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SVG image soure for datatable pagination forward navigation</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="svgpagertoend" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> svg<wbr>Pager<wbr>ToEnd</h3>
+					<div class="tsd-signature tsd-kind-icon">svg<wbr>Pager<wbr>ToEnd<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/pagination.model.ts#L64">directives/pagination.model.ts:64</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SVG image soure for datatable pagination jump to last page</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="svgpagertostart" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> svg<wbr>Pager<wbr>ToStart</h3>
+					<div class="tsd-signature tsd-kind-icon">svg<wbr>Pager<wbr>ToStart<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/pagination.model.ts#L66">directives/pagination.model.ts:66</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SVG image soure for datatable pagination jump to first pages</p>
+						</div>
 					</div>
 				</section>
 			</section>
@@ -158,31 +176,91 @@
 					<li class=" tsd-kind-module tsd-is-not-exported">
 						<a href="../modules/cs.html">cs</a>
 					</li>
-					<li class=" tsd-kind-module tsd-parent-kind-module">
+					<li class="current tsd-kind-module tsd-parent-kind-module">
 						<a href="../modules/cs.directives.html">cs.directives</a>
 					</li>
-					<li class="current tsd-kind-module tsd-parent-kind-module">
+					<li class=" tsd-kind-module tsd-parent-kind-module">
 						<a href="../modules/cs.services.html">cs.services</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/cs.directives.datatablecolumntype.html" class="tsd-kind-icon">Data<wbr>Table<wbr>Column<wbr>Type</a>
+					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-not-exported">
-						<a href="../classes/cs.services.datatablesortservice.html" class="tsd-kind-icon">Datatable<wbr>Sort<wbr>Service</a>
+						<a href="../classes/cs.directives.datatabledirective.html" class="tsd-kind-icon">Datatable<wbr>Directive</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../classes/cs.directives.paginationdirective.html" class="tsd-kind-icon">Pagination<wbr>Directive</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="cs.directives.idatatablecolumn.html" class="tsd-kind-icon">IDatatable<wbr>Column</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="cs.directives.idatatablecolumnondrawevent.html" class="tsd-kind-icon">IDatatable<wbr>Column<wbr>OnDraw<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="cs.directives.idatatableoptions.html" class="tsd-kind-icon">IDatatable<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="cs.directives.idatatablepagingoptions.html" class="tsd-kind-icon">IDatatable<wbr>Paging<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
+						<a href="cs.directives.idatatablescope.html" class="tsd-kind-icon">IDatatable<wbr>Scope</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="cs.directives.idatatablesort.html" class="tsd-kind-icon">IDatatable<wbr>Sort</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="cs.services.idatatablesortservice.html" class="tsd-kind-icon">IDatatable<wbr>Sort<wbr>Service</a>
+						<a href="cs.directives.ipaginationicons.html" class="tsd-kind-icon">IPagination<wbr>Icons</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="cs.services.idatatablesortservice.html#sortdata" class="tsd-kind-icon">sort<wbr>Data</a>
+								<a href="cs.directives.ipaginationicons.html#svgpagerbackward" class="tsd-kind-icon">svg<wbr>Pager<wbr>Backward</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="cs.directives.ipaginationicons.html#svgpagerforward" class="tsd-kind-icon">svg<wbr>Pager<wbr>Forward</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="cs.directives.ipaginationicons.html#svgpagertoend" class="tsd-kind-icon">svg<wbr>Pager<wbr>ToEnd</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="cs.directives.ipaginationicons.html#svgpagertostart" class="tsd-kind-icon">svg<wbr>Pager<wbr>ToStart</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="cs.directives.ipaginationoptions.html" class="tsd-kind-icon">IPagination<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
+						<a href="cs.directives.ipaginationscope.html" class="tsd-kind-icon">IPagination<wbr>Scope</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/cs.directives.html#svgpagerbackward" class="tsd-kind-icon">svg<wbr>Pager<wbr>Backward</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/cs.directives.html#svgpagerforward" class="tsd-kind-icon">svg<wbr>Pager<wbr>Forward</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/cs.directives.html#svgpagertoend" class="tsd-kind-icon">svg<wbr>Pager<wbr>ToEnd</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/cs.directives.html#svgpagertostart" class="tsd-kind-icon">svg<wbr>Pager<wbr>ToStart</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/cs.directives.html#svgsort" class="tsd-kind-icon">svg<wbr>Sort</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/cs.directives.html#svgsortasc" class="tsd-kind-icon">svg<wbr>Sort<wbr>Asc</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/cs.directives.html#svgsortdesc" class="tsd-kind-icon">svg<wbr>Sort<wbr>Desc</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

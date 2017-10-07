@@ -106,18 +106,42 @@ namespace cs.directives
             $element.addClass('cs-pagination');
 
             if ($scope.options !== undefined && $scope.options !== null) {
-                $scope.svgPagerBackward = self.$sce.trustAsHtml(svgPagerBackward);
-                $scope.svgPagerForward = self.$sce.trustAsHtml(svgPagerForward);
-                $scope.svgPagerToEnd = self.$sce.trustAsHtml(svgPagerToEnd);
-                $scope.svgPagerToStart = self.$sce.trustAsHtml(svgPagerToStart);
 
-                self.setPages($scope);
-
-                $scope.options.page = $scope.options.page ? $scope.options.page : 1;
-                $scope.startPage = 1;
+                self.initializeIcons($scope);
+                self.initializePages($scope);
 
                 $scope.initialized = true;
             }
+        }
+
+        private initializeIcons($scope: IPaginationScope) {
+            const self: PaginationDirective = this;
+            
+            $scope.svgPagerBackward = self.$sce.trustAsHtml(svgPagerBackward);
+            $scope.svgPagerForward = self.$sce.trustAsHtml(svgPagerForward);
+            $scope.svgPagerToEnd = self.$sce.trustAsHtml(svgPagerToEnd);
+            $scope.svgPagerToStart = self.$sce.trustAsHtml(svgPagerToStart);
+
+            if ($scope.options.paginationIcons)
+            {
+                $scope.svgPagerBackward = self.$sce.trustAsHtml($scope.options.paginationIcons.svgPagerBackward ? $scope.options.paginationIcons.svgPagerBackward: svgPagerBackward);
+                $scope.svgPagerForward = self.$sce.trustAsHtml($scope.options.paginationIcons.svgPagerForward ? $scope.options.paginationIcons.svgPagerForward: svgPagerForward);
+                $scope.svgPagerToEnd = self.$sce.trustAsHtml($scope.options.paginationIcons.svgPagerToEnd ? $scope.options.paginationIcons.svgPagerToEnd: svgPagerToEnd);
+                $scope.svgPagerToStart = self.$sce.trustAsHtml($scope.options.paginationIcons.svgPagerToStart ? $scope.options.paginationIcons.svgPagerToStart: svgPagerToStart);
+            }
+        }
+        
+        private initializePages($scope: IPaginationScope): void {
+            const self: PaginationDirective = this;
+
+            if ($scope.options.total == 0) {
+                $scope.pages = [];
+            } else {
+                $scope.pages = self.range(1, Math.ceil( $scope.options.total/ $scope.options.pageSize));
+            }
+
+            $scope.options.page = $scope.options.page ? $scope.options.page : 1;
+            $scope.startPage = 1;
         }
 
         private range(start: number, end: number): Array<number> {
@@ -128,16 +152,6 @@ namespace cs.directives
             }
 
             return result;
-        }
-
-        private setPages($scope: IPaginationScope): void {
-            const self: PaginationDirective = this;
-
-            if ($scope.options.total == 0) {
-                $scope.pages = [];
-            } else {
-                $scope.pages = self.range(1, Math.ceil( $scope.options.total/ $scope.options.pageSize));
-            }
         }
     }
 
