@@ -118,12 +118,10 @@ namespace cs.services
      */
     export interface IDatatableSortService
     {
-        sortData: (
-            /** Array of objects */
-            data: Array<any>,  
-            /** Datatable options */
-            options: IDatatableOptions 
-        ) => void;
+        /**
+         * Sorts data in a dataset based on datatable options
+         */
+        sortData: (data: Array<any>, options: IDatatableOptions ) => void;
     }
 
     if (cs.app) {
