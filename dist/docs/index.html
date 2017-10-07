@@ -65,11 +65,70 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="cs-angular">cs-angular</h1>
-				<p>Angular directives</p>
+				<h2 id="angular-directives">Angular directives</h2>
 				<ul>
-					<li>Datatable </li>
+					<li>Datatable</li>
 					<li>Pagination</li>
 				</ul>
+				<h2 id="how-to-get-started">How to get started</h2>
+				<h3 id="1-install-npm-package">1. Install npm package</h3>
+				<pre><code class="lang-bash">npm install cs-angular --save
+</code></pre>
+				<h3 id="2-usage">2. Usage</h3>
+				<p>You need to include at least <code>cs-angular.js.min</code> and  <code>cs-angular.css.min</code> (as minimal setup) into your project and then you can use the directives in your angular application. You can locate the files in the <code>.\node_modules\cs-angular\dist</code> folder of your website.</p>
+				<p>For use in TypeScript applications, a <code>cs-angular.d.ts</code> file is present at <code>.\node_modules\cs-angular\dist</code>.</p>
+				<p>The API documentation is located at <code>.\node_modules\cs-angular\dist\docs\index.html</code></p>
+				<p>A fully working demo is located at <code>.\node_modules\cs-angular\demo\index.html</code></p>
+				<h4 id="html">HTML</h4>
+				<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">ng-app</span>=<span class="hljs-string">"demo"</span>&gt;</span>
+...
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"ExampleController"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">cs-datatable</span> <span class="hljs-attr">cs-options</span>=<span class="hljs-string">"demoOptions"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">cs-datatable</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+...
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
+				<h4 id="javascript">Javascript</h4>
+				<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> app = angular.module(<span class="hljs-string">'demo'</span>, [<span class="hljs-string">'csAngular'</span>]);
+
+app.controller(<span class="hljs-string">'ExampleController'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$scope</span>) </span>{
+    <span class="hljs-keyword">var</span> data = [
+        { <span class="hljs-attr">name</span> : <span class="hljs-string">'Teddy'</span>, <span class="hljs-attr">rank</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">birthdate</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-number">1945</span>, <span class="hljs-number">10</span> ,<span class="hljs-number">2</span>) },
+        { <span class="hljs-attr">name</span> : <span class="hljs-string">'Donna'</span>, <span class="hljs-attr">rank</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">birthdate</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-number">1976</span>, <span class="hljs-number">3</span> , <span class="hljs-number">15</span>) },
+        { <span class="hljs-attr">name</span> : <span class="hljs-string">'Jack'</span>, <span class="hljs-attr">rank</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">birthdate</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-number">1960</span>, <span class="hljs-number">5</span> , <span class="hljs-number">6</span>) },
+        { <span class="hljs-attr">name</span> : <span class="hljs-string">'Stella'</span>, <span class="hljs-attr">rank</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">birthdate</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-number">1970</span>, <span class="hljs-number">2</span> ,<span class="hljs-number">27</span>) }
+    ];
+
+    $scope.demoOptions = {
+        <span class="hljs-attr">columns</span>: [
+                {
+                    <span class="hljs-attr">cssClass</span>: <span class="hljs-string">''</span>,
+                    <span class="hljs-attr">dataType</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">name</span>: <span class="hljs-string">'name'</span>,
+                    <span class="hljs-attr">sortable</span>: <span class="hljs-literal">true</span>,
+                    <span class="hljs-attr">title</span>: <span class="hljs-string">'Naam'</span>
+                },
+                {
+                    <span class="hljs-attr">cssClass</span>: <span class="hljs-string">''</span>,
+                    <span class="hljs-attr">dataType</span>: <span class="hljs-number">2</span>,
+                    <span class="hljs-attr">name</span>: <span class="hljs-string">'rank'</span>,
+                    <span class="hljs-attr">sortable</span>: <span class="hljs-literal">true</span>,
+                    <span class="hljs-attr">title</span>: <span class="hljs-string">'Ranking'</span>
+                },
+                {
+                    <span class="hljs-attr">cssClass</span>: <span class="hljs-string">''</span>,
+                    <span class="hljs-attr">dataType</span>: <span class="hljs-number">4</span>,
+                    <span class="hljs-attr">name</span>: <span class="hljs-string">'birthdate'</span>,
+                    <span class="hljs-attr">onDraw</span>: onBirthdateDraw,
+                    <span class="hljs-attr">sortable</span>: <span class="hljs-literal">true</span>,
+                    <span class="hljs-attr">title</span>: <span class="hljs-string">'Birthdate'</span>
+                }
+            ],
+        <span class="hljs-attr">data</span>: data,
+        <span class="hljs-attr">sort</span>: { <span class="hljs-attr">columnName</span>: <span class="hljs-string">'rank'</span>, <span class="hljs-attr">direction</span>: <span class="hljs-string">'asc'</span> }
+    };
+});
+</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
