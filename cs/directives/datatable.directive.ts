@@ -86,7 +86,7 @@ namespace cs.directives
                 let result = '';
      
                 if (column.onDraw) {
-                    column.onDraw({ value: value, model: model });
+                    result = column.onDraw({ value: value, model: model });
                 } else {
                     switch (column.dataType)
                     {

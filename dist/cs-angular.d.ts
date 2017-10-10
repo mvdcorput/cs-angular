@@ -90,11 +90,11 @@ declare namespace cs.directives {
  * Custom icons for pagination buttons
  */
     interface IDatatableSortingIcons {
-        /** SVG image for datatable header column neutral sort icon  */
+        /** SVG image source for datatable header column neutral sort icon  */
         svgSort: string;
-        /** SVG image for datatable header column ascending sort icon  */
+        /** SVG image source for datatable header column ascending sort icon  */
         svgSortAsc: string;
-        /** SVG image for datatable header column descending sort icon  */
+        /** SVG image source for datatable header column descending sort icon  */
         svgSortDesc: string;
     }
 }
@@ -129,13 +129,13 @@ declare namespace cs.directives {
      * Custom icons for pagination buttons
      */
     interface IPaginationIcons {
-        /** SVG image soure for datatable pagination backward navigation */
+        /** SVG image source for datatable pagination backward navigation */
         svgPagerBackward?: string;
         /** SVG image soure for datatable pagination forward navigation */
         svgPagerForward?: string;
-        /** SVG image soure for datatable pagination jump to last page */
+        /** SVG image source for datatable pagination jump to last page */
         svgPagerToEnd?: string;
-        /** SVG image soure for datatable pagination jump to first pages */
+        /** SVG image source for datatable pagination jump to first pages */
         svgPagerToStart?: string;
     }
 }
