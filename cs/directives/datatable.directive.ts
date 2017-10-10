@@ -15,7 +15,9 @@ namespace cs.directives
         <table ng-if="initialized === true">
             <thead>
                 <tr>
-                    <th ng-repeat="column in options.columns">
+                    <th ng-repeat="column in options.columns" 
+                        ng-class="column.cssClass"
+                        ng-if="column.hide !== true">
                         <span>{{column.title}}</span>
                         <div class="icon-sort" 
                             ng-bind-html="svgSort"
@@ -38,10 +40,10 @@ namespace cs.directives
             <tbody>
                 <tr ng-repeat="item in filteredData | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index"
                     ng-class-even="'even'">
-                    <td ng-repeat="column in options.columns" ng-if="!column.onDraw && [4,5].indexOf(column.dataType) === -1">{{item[column.name]}}</td>
-                    <td ng-repeat="column in options.columns" ng-if="!column.onDraw && column.dataType === 4">{{renderDateColumn(item[column.name])}}</td>
-                    <td ng-repeat="column in options.columns" ng-if="!column.onDraw && column.dataType === 5">{{renderDateStringColumn(item[column.name])}}</td>
-                    <td ng-repeat="column in options.columns" ng-if="column.onDraw">{{column.onDraw({ value: item[column.name], model: item})}}</td>
+                    <td ng-repeat="column in options.columns"
+                        ng-class="column.cssClass">
+                        {{drawColumn(column, item[column.name], item)}}
+                    </td>
                 </tr>
             </tbody>
             <tfoot>
@@ -60,10 +62,11 @@ namespace cs.directives
             
             self.link = self.unboundLink.bind(self);
         }
-            
+        
         private unboundLink($scope: IDatatableScope, $element: ng.IAugmentedJQuery, attrs: ng.IAttributes): void {
             const self: DatatableDirective = this;
             
+            $scope.drawColumn = drawColumn; 
             $scope.filter = filter;
             $scope.renderDateColumn = self.renderDateColumn.bind(self);
             $scope.renderDateStringColumn = self.renderDateStringColumn.bind(self);
@@ -78,6 +81,29 @@ namespace cs.directives
                     sort(column, $scope.options.sort.direction);
                 }
             } 
+
+            function drawColumn(column: IDatatableColumn, value: any, model: any): string {
+                let result = '';
+     
+                if (column.onDraw) {
+                    column.onDraw({ value: value, model: model });
+                } else {
+                    switch (column.dataType)
+                    {
+                        case DataTableColumnType.date: 
+                            result = $scope.renderDateColumn(value);
+                            break;
+                        case DataTableColumnType.dateString: 
+                            result = $scope.renderDateStringColumn(value);
+                            break;
+                        default: 
+                            result = value;
+                            break;
+                    }
+                }
+    
+                return result;
+            }
 
             function filter() {
                 if ($scope.options && ($scope.options.filter !== undefined && $scope.options.filter !== null && $scope.options.filter !== ''))
@@ -158,6 +184,10 @@ namespace cs.directives
             
             $element.addClass('cs-datatable');
 
+            if ($scope.options.cssClass) {
+                $element.addClass($scope.options.cssClass);
+            }
+
             if ($scope.options !== undefined && $scope.options !== null) {
                 if ($scope.options.columns === undefined || $scope.options.columns === null) {
                     $scope.options.columns = [];
@@ -202,7 +232,7 @@ namespace cs.directives
             }
         }
 
-        private renderDateStringColumn(value: string, dateConverter: (value: string) => Date): string {
+        private renderDateStringColumn(value: string, dateConverter?: (value: string) => Date): string {
             const self: DatatableDirective = this;
             
             if (dateConverter) {
@@ -220,6 +250,7 @@ namespace cs.directives
     
             if (phase !== '$apply' && phase !== '$digest') {
                 $scope.$apply();
+
                 result = true;
             }
     
@@ -228,13 +259,14 @@ namespace cs.directives
     }
 
     interface IDatatableScope extends ng.IScope {
+        drawColumn: (column: IDatatableColumn, value: any, model: any) => string;
         filter: () => void;
         filteredData: Array<any>;        
         initialized: boolean;
         options: IDatatableOptions;
         paginationOptions: IPaginationOptions;
         renderDateColumn: (value: Date) => string;
-        renderDateStringColumn: (value: string, dateConverter: (value: string) => Date) => string;
+        renderDateStringColumn: (value: string, dateConverter?: (value: string) => Date) => string;
         sort: (column: IDatatableColumn, direction: 'asc' | 'desc') => void;
         sorting: cs.services.IDatatableSortService;
         svgSort: string;

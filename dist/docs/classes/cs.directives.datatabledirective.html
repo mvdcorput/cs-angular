@@ -137,7 +137,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L55">directives/datatable.directive.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L57">directives/datatable.directive.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -162,7 +162,7 @@
 					<div class="tsd-signature tsd-kind-icon">$sce<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ng.ISCEService</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L57">directives/datatable.directive.ts:57</a></li>
+							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L59">directives/datatable.directive.ts:59</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -192,14 +192,14 @@
 					<div class="tsd-signature tsd-kind-icon">sorting<span class="tsd-signature-symbol">:</span> <a href="../interfaces/cs.services.idatatablesortservice.html" class="tsd-signature-type">IDatatableSortService</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L58">directives/datatable.directive.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L60">directives/datatable.directive.ts:60</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-not-exported">
 					<a name="template" class="tsd-anchor"></a>
 					<h3>template</h3>
-					<div class="tsd-signature tsd-kind-icon">template<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;&lt;table ng-if&#x3D;&quot;initialized &#x3D;&#x3D;&#x3D; true&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;th ng-repeat&#x3D;&quot;column in options.columns&quot;&gt;&lt;span&gt;{{column.title}}&lt;/span&gt;&lt;div class&#x3D;&quot;icon-sort&quot;ng-bind-html&#x3D;&quot;svgSort&quot;ng-click&#x3D;&quot;sort(column, &#x27;asc&#x27;)&quot;ng-if&#x3D;&quot;column.sortable &amp;&amp; options.sort.columnName!&#x3D;&#x3D;column.name&quot;&gt;&lt;/div&gt;&lt;div class&#x3D;&quot;icon-sort&quot;ng-bind-html&#x3D;&quot;svgSortAsc&quot;ng-click&#x3D;&quot;sort(column, &#x27;desc&#x27;)&quot;ng-if&#x3D;&quot;column.sortable &amp;&amp; options.sort.columnName&#x3D;&#x3D;&#x3D;column.name &amp;&amp; options.sort.direction&#x3D;&#x3D;&#x3D;&#x27;asc&#x27;&quot;&gt;&lt;/div&gt;&lt;div class&#x3D;&quot;icon-sort&quot;ng-bind-html&#x3D;&quot;svgSortDesc&quot;ng-click&#x3D;&quot;sort(column, &#x27;asc&#x27;)&quot;ng-if&#x3D;&quot;column.sortable &amp;&amp; options.sort.columnName&#x3D;&#x3D;&#x3D;column.name &amp;&amp; options.sort.direction&#x3D;&#x3D;&#x3D;&#x27;desc&#x27;&quot;&gt;&lt;/div&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr ng-repeat&#x3D;&quot;item in filteredData | startFrom: paginationOptions.page &#x3D;&#x3D; 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index&quot;ng-class-even&#x3D;&quot;&#x27;even&#x27;&quot;&gt;&lt;td ng-repeat&#x3D;&quot;column in options.columns&quot; ng-if&#x3D;&quot;!column.onDraw &amp;&amp; [4,5].indexOf(column.dataType) &#x3D;&#x3D;&#x3D; -1&quot;&gt;{{item[column.name]}}&lt;/td&gt;&lt;td ng-repeat&#x3D;&quot;column in options.columns&quot; ng-if&#x3D;&quot;!column.onDraw &amp;&amp; column.dataType &#x3D;&#x3D;&#x3D; 4&quot;&gt;{{renderDateColumn(item[column.name])}}&lt;/td&gt;&lt;td ng-repeat&#x3D;&quot;column in options.columns&quot; ng-if&#x3D;&quot;!column.onDraw &amp;&amp; column.dataType &#x3D;&#x3D;&#x3D; 5&quot;&gt;{{renderDateStringColumn(item[column.name])}}&lt;/td&gt;&lt;td ng-repeat&#x3D;&quot;column in options.columns&quot; ng-if&#x3D;&quot;column.onDraw&quot;&gt;{{column.onDraw({ value: item[column.name], model: item})}}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;tfoot&gt;&lt;tr&gt;&lt;td colspan&#x3D;&quot;{{options.columns.length}}&quot;&gt;&lt;div cs-pagination cs-options&#x3D;&quot;paginationOptions&quot;&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tfoot&gt;&lt;/table&gt;&#x60;</span></div>
+					<div class="tsd-signature tsd-kind-icon">template<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;&lt;table ng-if&#x3D;&quot;initialized &#x3D;&#x3D;&#x3D; true&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;th ng-repeat&#x3D;&quot;column in options.columns&quot;ng-class&#x3D;&quot;column.cssClass&quot;ng-if&#x3D;&quot;column.hide !&#x3D;&#x3D; true&quot;&gt;&lt;span&gt;{{column.title}}&lt;/span&gt;&lt;div class&#x3D;&quot;icon-sort&quot;ng-bind-html&#x3D;&quot;svgSort&quot;ng-click&#x3D;&quot;sort(column, &#x27;asc&#x27;)&quot;ng-if&#x3D;&quot;column.sortable &amp;&amp; options.sort.columnName!&#x3D;&#x3D;column.name&quot;&gt;&lt;/div&gt;&lt;div class&#x3D;&quot;icon-sort&quot;ng-bind-html&#x3D;&quot;svgSortAsc&quot;ng-click&#x3D;&quot;sort(column, &#x27;desc&#x27;)&quot;ng-if&#x3D;&quot;column.sortable &amp;&amp; options.sort.columnName&#x3D;&#x3D;&#x3D;column.name &amp;&amp; options.sort.direction&#x3D;&#x3D;&#x3D;&#x27;asc&#x27;&quot;&gt;&lt;/div&gt;&lt;div class&#x3D;&quot;icon-sort&quot;ng-bind-html&#x3D;&quot;svgSortDesc&quot;ng-click&#x3D;&quot;sort(column, &#x27;asc&#x27;)&quot;ng-if&#x3D;&quot;column.sortable &amp;&amp; options.sort.columnName&#x3D;&#x3D;&#x3D;column.name &amp;&amp; options.sort.direction&#x3D;&#x3D;&#x3D;&#x27;desc&#x27;&quot;&gt;&lt;/div&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr ng-repeat&#x3D;&quot;item in filteredData | startFrom: paginationOptions.page &#x3D;&#x3D; 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index&quot;ng-class-even&#x3D;&quot;&#x27;even&#x27;&quot;&gt;&lt;td ng-repeat&#x3D;&quot;column in options.columns&quot;ng-class&#x3D;&quot;column.cssClass&quot;&gt;{{drawColumn(column, item[column.name], item)}}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;tfoot&gt;&lt;tr&gt;&lt;td colspan&#x3D;&quot;{{options.columns.length}}&quot;&gt;&lt;div cs-pagination cs-options&#x3D;&quot;paginationOptions&quot;&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tfoot&gt;&lt;/table&gt;&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L13">directives/datatable.directive.ts:13</a></li>
@@ -219,7 +219,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L156">directives/datatable.directive.ts:156</a></li>
+									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L182">directives/datatable.directive.ts:182</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -245,7 +245,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L193">directives/datatable.directive.ts:193</a></li>
+									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L223">directives/datatable.directive.ts:223</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -262,13 +262,13 @@
 					<a name="renderdatestringcolumn" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> render<wbr>Date<wbr>String<wbr>Column</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">render<wbr>Date<wbr>String<wbr>Column<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, dateConverter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">render<wbr>Date<wbr>String<wbr>Column<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, dateConverter<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L205">directives/datatable.directive.ts:205</a></li>
+									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L235">directives/datatable.directive.ts:235</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -277,7 +277,7 @@
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>dateConverter: <span class="tsd-signature-type">function</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> dateConverter: <span class="tsd-signature-type">function</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
@@ -312,7 +312,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L215">directives/datatable.directive.ts:215</a></li>
+									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L245">directives/datatable.directive.ts:245</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -335,7 +335,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L64">directives/datatable.directive.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.directive.ts#L66">directives/datatable.directive.ts:66</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>

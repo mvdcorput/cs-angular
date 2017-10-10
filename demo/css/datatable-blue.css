@@ -1,0 +1,17 @@
+.cs-datatable.blue table {
+    color: #2B448A;    
+    font-family: 'Arial';
+}
+
+.cs-datatable.blue table thead {
+    background-color: #2B448A;
+    color: white;
+}
+
+/* Set footer svg color */
+.cs-datatable.blue a svg path {
+    fill: #2B448A;
+}
+.cs-datatable.blue a.disabled svg path {
+    fill: #474D5E;
+}

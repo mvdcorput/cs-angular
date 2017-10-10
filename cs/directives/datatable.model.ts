@@ -46,10 +46,12 @@ namespace cs.directives
      * Datatable column configuration
      */
     export interface IDatatableColumn {
-        /** CSS class names for root element */
-        cssClass: string;
+        /** Optional CSS class names for root element */
+        cssClass?: string;
         /** Data type for column content */
         dataType: DataTableColumnType;
+        /** Optionally set display to none for column */
+        hide?: boolean;
         /** Optional custom convert date string to javascript Date */
         onDateStringConvert?: (value: string) => Date;
         /** Optional custom draw contents for data cell (TD) */
@@ -76,10 +78,17 @@ namespace cs.directives
      * Options for datatable directive: cs-datatable
      */
     export interface IDatatableOptions {
+        /** Columns definition for datatable */
         columns: Array<IDatatableColumn>;
+        /** Optional CSS class to add to directive root element */
+        cssClass?: string;
+        /** Dataset (array of objects) */
         data: Array<any>;
+        /** Filter function, bound by directive on initialisation */
         filter?: string;
+        /** Optional sort configuration */
         sort?: IDatatableSort;
+        /** Optional secundary/fallback sort configuration */
         sortSecondare?: IDatatableSort;
     }
     

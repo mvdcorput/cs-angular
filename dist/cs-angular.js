@@ -25,12 +25,13 @@ var cs;
                 this.scope = {
                     options: '=csOptions'
                 };
-                this.template = "\n        <table ng-if=\"initialized === true\">\n            <thead>\n                <tr>\n                    <th ng-repeat=\"column in options.columns\">\n                        <span>{{column.title}}</span>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSort\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName!==column.name\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortAsc\"\n                            ng-click=\"sort(column, 'desc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='asc'\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortDesc\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='desc'\"> \n                        </div>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr ng-repeat=\"item in filteredData | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index\"\n                    ng-class-even=\"'even'\">\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && [4,5].indexOf(column.dataType) === -1\">{{item[column.name]}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && column.dataType === 4\">{{renderDateColumn(item[column.name])}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"!column.onDraw && column.dataType === 5\">{{renderDateStringColumn(item[column.name])}}</td>\n                    <td ng-repeat=\"column in options.columns\" ng-if=\"column.onDraw\">{{column.onDraw({ value: item[column.name], model: item})}}</td>\n                </tr>\n            </tbody>\n            <tfoot>\n                <tr>\n                    <td colspan=\"{{options.columns.length}}\">\n                        <div cs-pagination cs-options=\"paginationOptions\">\n                    </td>\n                </tr>\n            </tfoot>   \n        </table>\n        ";
+                this.template = "\n        <table ng-if=\"initialized === true\">\n            <thead>\n                <tr>\n                    <th ng-repeat=\"column in options.columns\" \n                        ng-class=\"column.cssClass\"\n                        ng-if=\"column.hide !== true\">\n                        <span>{{column.title}}</span>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSort\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName!==column.name\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortAsc\"\n                            ng-click=\"sort(column, 'desc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='asc'\"> \n                        </div>\n                        <div class=\"icon-sort\" \n                            ng-bind-html=\"svgSortDesc\"\n                            ng-click=\"sort(column, 'asc')\"\n                            ng-if=\"column.sortable && options.sort.columnName===column.name && options.sort.direction==='desc'\"> \n                        </div>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr ng-repeat=\"item in filteredData | startFrom: paginationOptions.page == 1 ? 1 : ((paginationOptions.page - 1) * paginationOptions.pageSize) + 1 | limitTo: paginationOptions.pageSize track by $index\"\n                    ng-class-even=\"'even'\">\n                    <td ng-repeat=\"column in options.columns\"\n                        ng-class=\"column.cssClass\">\n                        {{drawColumn(column, item[column.name], item)}}\n                    </td>\n                </tr>\n            </tbody>\n            <tfoot>\n                <tr>\n                    <td colspan=\"{{options.columns.length}}\">\n                        <div cs-pagination cs-options=\"paginationOptions\">\n                    </td>\n                </tr>\n            </tfoot>   \n        </table>\n        ";
                 var self = this;
                 self.link = self.unboundLink.bind(self);
             }
             DatatableDirective.prototype.unboundLink = function ($scope, $element, attrs) {
                 var self = this;
+                $scope.drawColumn = drawColumn;
                 $scope.filter = filter;
                 $scope.renderDateColumn = self.renderDateColumn.bind(self);
                 $scope.renderDateStringColumn = self.renderDateStringColumn.bind(self);
@@ -41,6 +42,26 @@ var cs;
                     if (column) {
                         sort(column, $scope.options.sort.direction);
                     }
+                }
+                function drawColumn(column, value, model) {
+                    var result = '';
+                    if (column.onDraw) {
+                        column.onDraw({ value: value, model: model });
+                    }
+                    else {
+                        switch (column.dataType) {
+                            case directives.DataTableColumnType.date:
+                                result = $scope.renderDateColumn(value);
+                                break;
+                            case directives.DataTableColumnType.dateString:
+                                result = $scope.renderDateStringColumn(value);
+                                break;
+                            default:
+                                result = value;
+                                break;
+                        }
+                    }
+                    return result;
                 }
                 function filter() {
                     if ($scope.options && ($scope.options.filter !== undefined && $scope.options.filter !== null && $scope.options.filter !== '')) {
@@ -103,6 +124,9 @@ var cs;
             DatatableDirective.prototype.initialize = function ($scope, $element) {
                 var self = this;
                 $element.addClass('cs-datatable');
+                if ($scope.options.cssClass) {
+                    $element.addClass($scope.options.cssClass);
+                }
                 if ($scope.options !== undefined && $scope.options !== null) {
                     if ($scope.options.columns === undefined || $scope.options.columns === null) {
                         $scope.options.columns = [];
