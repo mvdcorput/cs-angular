@@ -56,13 +56,13 @@ namespace cs.directives
      * Custom icons for pagination buttons
      */
     export interface IPaginationIcons {
-        /** SVG image soure for datatable pagination backward navigation */
+        /** SVG image source for datatable pagination backward navigation */
         svgPagerBackward?: string;
         /** SVG image soure for datatable pagination forward navigation */
         svgPagerForward?: string;
-        /** SVG image soure for datatable pagination jump to last page */
+        /** SVG image source for datatable pagination jump to last page */
         svgPagerToEnd?: string;
-        /** SVG image soure for datatable pagination jump to first pages */
+        /** SVG image source for datatable pagination jump to first pages */
         svgPagerToStart?: string;
     }
 }

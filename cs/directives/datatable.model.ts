@@ -110,11 +110,11 @@ namespace cs.directives
      * Custom icons for pagination buttons
      */
     export interface IDatatableSortingIcons {
-        /** SVG image for datatable header column neutral sort icon  */
+        /** SVG image source for datatable header column neutral sort icon  */
         svgSort: string;
-        /** SVG image for datatable header column ascending sort icon  */
+        /** SVG image source for datatable header column ascending sort icon  */
         svgSortAsc: string;
-        /** SVG image for datatable header column descending sort icon  */
+        /** SVG image source for datatable header column descending sort icon  */
         svgSortDesc: string;
     }
 }
