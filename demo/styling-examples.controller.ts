@@ -15,7 +15,31 @@ namespace cs.demo {
             const self: StylingExamplesController = this;
 
             // Blue styling example (datatable-blue.css)
-            self.$scope.blueDatatableOptions = self.setupDatatable(self.cloneArray(DemoData, true));    
+            const blueDatatableOptions = self.setupDatatable(self.cloneArray(DemoData, true)); 
+
+            blueDatatableOptions.cssClass = 'blue';
+
+            self.$scope.blueDatatableOptions = blueDatatableOptions; 
+            
+            // Custom SVG icons example
+            const customIconsOptions = self.setupDatatable(self.cloneArray(DemoData, true));
+
+            customIconsOptions.sortingIcons = {
+                svgSort: `
+                <?xml version="1.0" encoding="utf-8"?>
+                <svg height="100%" width="100%" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1216 320q0 26-19 45t-45 19h-128v1024h128q26 0 45 19t19 45-19 45l-256 256q-19 19-45 19t-45-19l-256-256q-19-19-19-45t19-45 45-19h128v-1024h-128q-26 0-45-19t-19-45 19-45l256-256q19-19 45-19t45 19l256 256q19 19 19 45z" fill="#fff"/></svg>
+                `,
+                svgSortAsc: `
+                <?xml version="1.0" encoding="utf-8"?>
+                <svg height="100%" width="100%" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1277 1299q8 19-5 35l-350 384q-10 10-23 10-14 0-24-10l-355-384q-13-16-5-35 9-19 29-19h224v-1248q0-14 9-23t23-9h192q14 0 23 9t9 23v1248h224q21 0 29 19z" fill="#fff"/></svg>
+                `,
+                svgSortDesc: `
+                <?xml version="1.0" encoding="utf-8"?>
+                <svg height="100%" width="100%" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1277 493q-9 19-29 19h-224v1248q0 14-9 23t-23 9h-192q-14 0-23-9t-9-23v-1248h-224q-21 0-29-19t5-35l350-384q10-10 23-10 14 0 24 10l355 384q13 16 5 35z" fill="#fff"/></svg>  
+                `
+            };
+
+            self.$scope.customIconsDatatableOptions = customIconsOptions;
         }
 
         private setupDatatable(data : Array<any>): IDatatableOptions {
@@ -67,7 +91,6 @@ namespace cs.demo {
                         title: 'Geboortedatum'
                     }
                 ],
-                cssClass: 'blue',
                 data: data,
                 sort: { columnName: 'id', direction: 'asc' }
             };
@@ -80,6 +103,7 @@ namespace cs.demo {
 
     interface FilterExamplesScope extends ng.IScope {
         blueDatatableOptions: IDatatableOptions;
+        customIconsDatatableOptions: IDatatableOptions;
     }
 
     const DemoData: Array<any> = [

@@ -204,9 +204,7 @@ namespace cs.directives
                     $scope.filter();
                 });
 
-                $scope.svgSort = self.$sce.trustAsHtml(svgSort);
-                $scope.svgSortAsc = self.$sce.trustAsHtml(svgSortAsc);
-                $scope.svgSortDesc = self.$sce.trustAsHtml(svgSortDesc);
+                self.initializeIcons($scope);
 
                 $scope.paginationOptions = {
                     gap: 5,
@@ -217,6 +215,21 @@ namespace cs.directives
                 $scope.filter();
 
                 $scope.initialized = true;
+            }
+        }
+
+        private initializeIcons($scope: IDatatableScope) {
+            const self: DatatableDirective = this;
+            
+            $scope.svgSort = self.$sce.trustAsHtml(svgSort);
+            $scope.svgSortAsc = self.$sce.trustAsHtml(svgSortAsc);
+            $scope.svgSortDesc = self.$sce.trustAsHtml(svgSortDesc);
+
+            if ($scope.options.sortingIcons)
+            {
+                $scope.svgSort = self.$sce.trustAsHtml($scope.options.sortingIcons.svgSort ? $scope.options.sortingIcons.svgSort : svgSort);
+                $scope.svgSortAsc = self.$sce.trustAsHtml($scope.options.sortingIcons.svgSortAsc ? $scope.options.sortingIcons.svgSortAsc : svgSortAsc);
+                $scope.svgSortDesc = self.$sce.trustAsHtml($scope.options.sortingIcons.svgSortDesc ? $scope.options.sortingIcons.svgSortDesc : svgSortDesc);
             }
         }
 

@@ -86,20 +86,16 @@ namespace cs.directives
         data: Array<any>;
         /** Filter function, bound by directive on initialisation */
         filter?: string;
+        /** Optional paging configuration */
+        paging?: IPaginationOptions;
         /** Optional sort configuration */
         sort?: IDatatableSort;
+        /** Optionally set sorting SVG icons  */
+        sortingIcons? :IDatatableSortingIcons;
         /** Optional secundary/fallback sort configuration */
         sortSecondare?: IDatatableSort;
     }
     
-    /**
-     * Options for datatable paging
-     */
-    export interface IDatatablePagingOptions {
-        /** Number of items to show per page */
-        pageSize: number;
-    }
-
     /**
      * Datatable sort configuration
      */
@@ -108,5 +104,17 @@ namespace cs.directives
         columnName: string;
         /** Sort direction (asc or desc) */
         direction: 'asc' | 'desc';
+    }
+
+        /**
+     * Custom icons for pagination buttons
+     */
+    export interface IDatatableSortingIcons {
+        /** SVG image for datatable header column neutral sort icon  */
+        svgSort: string;
+        /** SVG image for datatable header column ascending sort icon  */
+        svgSortAsc: string;
+        /** SVG image for datatable header column descending sort icon  */
+        svgSortDesc: string;
     }
 }

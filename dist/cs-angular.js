@@ -139,9 +139,7 @@ var cs;
                     $scope.$watch('options.filter', function () {
                         $scope.filter();
                     });
-                    $scope.svgSort = self.$sce.trustAsHtml(directives.svgSort);
-                    $scope.svgSortAsc = self.$sce.trustAsHtml(directives.svgSortAsc);
-                    $scope.svgSortDesc = self.$sce.trustAsHtml(directives.svgSortDesc);
+                    self.initializeIcons($scope);
                     $scope.paginationOptions = {
                         gap: 5,
                         pageSize: 5,
@@ -149,6 +147,17 @@ var cs;
                     };
                     $scope.filter();
                     $scope.initialized = true;
+                }
+            };
+            DatatableDirective.prototype.initializeIcons = function ($scope) {
+                var self = this;
+                $scope.svgSort = self.$sce.trustAsHtml(directives.svgSort);
+                $scope.svgSortAsc = self.$sce.trustAsHtml(directives.svgSortAsc);
+                $scope.svgSortDesc = self.$sce.trustAsHtml(directives.svgSortDesc);
+                if ($scope.options.sortingIcons) {
+                    $scope.svgSort = self.$sce.trustAsHtml($scope.options.sortingIcons.svgSort ? $scope.options.sortingIcons.svgSort : directives.svgSort);
+                    $scope.svgSortAsc = self.$sce.trustAsHtml($scope.options.sortingIcons.svgSortAsc ? $scope.options.sortingIcons.svgSortAsc : directives.svgSortAsc);
+                    $scope.svgSortDesc = self.$sce.trustAsHtml($scope.options.sortingIcons.svgSortDesc ? $scope.options.sortingIcons.svgSortDesc : directives.svgSortDesc);
                 }
             };
             DatatableDirective.prototype.renderDateColumn = function (value) {

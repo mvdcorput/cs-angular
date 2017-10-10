@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IDatatablePagingOptions | cs-angular</title>
+	<title>IDatatableSortingIcons | cs-angular</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -62,10 +62,10 @@
 					<a href="../modules/cs.directives.html">directives</a>
 				</li>
 				<li>
-					<a href="cs.directives.idatatablepagingoptions.html">IDatatablePagingOptions</a>
+					<a href="cs.directives.idatatablesortingicons.html">IDatatableSortingIcons</a>
 				</li>
 			</ul>
-			<h1>Interface IDatatablePagingOptions</h1>
+			<h1>Interface IDatatableSortingIcons</h1>
 		</div>
 	</div>
 </header>
@@ -75,7 +75,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Options for datatable paging</p>
+						<p>Custom icons for pagination buttons</p>
 					</div>
 				</div>
 			</section>
@@ -83,7 +83,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IDatatablePagingOptions</span>
+						<span class="target">IDatatableSortingIcons</span>
 					</li>
 				</ul>
 			</section>
@@ -94,7 +94,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cs.directives.idatatablepagingoptions.html#pagesize" class="tsd-kind-icon">page<wbr>Size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cs.directives.idatatablesortingicons.html#svgsort" class="tsd-kind-icon">svg<wbr>Sort</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cs.directives.idatatablesortingicons.html#svgsortasc" class="tsd-kind-icon">svg<wbr>Sort<wbr>Asc</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cs.directives.idatatablesortingicons.html#svgsortdesc" class="tsd-kind-icon">svg<wbr>Sort<wbr>Desc</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,17 +105,47 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="pagesize" class="tsd-anchor"></a>
-					<h3>page<wbr>Size</h3>
-					<div class="tsd-signature tsd-kind-icon">page<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="svgsort" class="tsd-anchor"></a>
+					<h3>svg<wbr>Sort</h3>
+					<div class="tsd-signature tsd-kind-icon">svg<wbr>Sort<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.model.ts#L100">directives/datatable.model.ts:100</a></li>
+							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.model.ts#L114">directives/datatable.model.ts:114</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Number of items to show per page</p>
+							<p>SVG image for datatable header column neutral sort icon</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="svgsortasc" class="tsd-anchor"></a>
+					<h3>svg<wbr>Sort<wbr>Asc</h3>
+					<div class="tsd-signature tsd-kind-icon">svg<wbr>Sort<wbr>Asc<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.model.ts#L116">directives/datatable.model.ts:116</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SVG image for datatable header column ascending sort icon</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="svgsortdesc" class="tsd-anchor"></a>
+					<h3>svg<wbr>Sort<wbr>Desc</h3>
+					<div class="tsd-signature tsd-kind-icon">svg<wbr>Sort<wbr>Desc<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/mvdcorput/cs-angular/tree/master/cs/directives/datatable.model.ts#L118">directives/datatable.model.ts:118</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SVG image for datatable header column descending sort icon</p>
 						</div>
 					</div>
 				</section>
@@ -156,24 +188,30 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="cs.directives.idatatableoptions.html" class="tsd-kind-icon">IDatatable<wbr>Options</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="cs.directives.idatatablepagingoptions.html" class="tsd-kind-icon">IDatatable<wbr>Paging<wbr>Options</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="cs.directives.idatatablepagingoptions.html#pagesize" class="tsd-kind-icon">page<wbr>Size</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
 						<a href="cs.directives.idatatablescope.html" class="tsd-kind-icon">IDatatable<wbr>Scope</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="cs.directives.idatatablesort.html" class="tsd-kind-icon">IDatatable<wbr>Sort</a>
 					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-module">
+						<a href="cs.directives.idatatablesortingicons.html" class="tsd-kind-icon">IDatatable<wbr>Sorting<wbr>Icons</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="cs.directives.idatatablesortingicons.html#svgsort" class="tsd-kind-icon">svg<wbr>Sort</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="cs.directives.idatatablesortingicons.html#svgsortasc" class="tsd-kind-icon">svg<wbr>Sort<wbr>Asc</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="cs.directives.idatatablesortingicons.html#svgsortdesc" class="tsd-kind-icon">svg<wbr>Sort<wbr>Desc</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="cs.directives.ipaginationicons.html" class="tsd-kind-icon">IPagination<wbr>Icons</a>
 					</li>
