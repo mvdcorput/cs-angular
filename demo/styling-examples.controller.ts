@@ -60,7 +60,8 @@ namespace cs.demo {
                         dataType: 1,
                         name: 'name',
                         sortable: true,
-                        title: 'Naam'
+                        title: 'Naam', 
+                        style: { width: '200px' }
                     },
                     {
                         cssClass: '',
@@ -68,7 +69,7 @@ namespace cs.demo {
                         name: 'street',
                         sortable: true,
                         title: 'Straat'
-                    },
+                    }, 
                     {
                         cssClass: '',
                         dataType: 1,

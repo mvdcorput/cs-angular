@@ -16,6 +16,7 @@ namespace cs.directives
             <thead>
                 <tr>
                     <th ng-repeat="column in options.columns" 
+                        ng-style="column.style"
                         ng-class="column.cssClass"
                         ng-if="column.hide !== true">
                         <span>{{column.title}}</span>

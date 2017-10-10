@@ -58,10 +58,12 @@ namespace cs.directives
         onDraw?: (event: IDatatableColumnOnDrawEvent) => string;
         /** Colum name (identifier) */
         name: string;
-        /** Enables/Disables sort icon in column header */
-        sortable: boolean;
+        /** Optional enables/disables sort icon in column header */
+        sortable?: boolean;
         /** Display title for column header */
-        title: string;
+        title?: string;
+        /** Optional css style for column element */
+        style?: any;    
     }
 
     /**
